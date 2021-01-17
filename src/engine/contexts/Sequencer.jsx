@@ -85,28 +85,6 @@ export const Sequencer = ({ children }) => {
 
     if (sequencerRef.current.metronome.current16th === 16) {
       sequencerRef.current.metronome.current16th = 0;
-
-      /*
-        At beginning of each loop program checks for new patterns and adds
-        temporary variables to nextNoteTime array and graphicsRefs Array
-        rhythmsRef.current.forEach((_, idx) => {
-          if (typeof sequencerRef.current.nextNoteTimes[idx] === 'undefined') {
-            sequencerRef.current.nextNoteTimes[idx] = {
-              id: idx,
-              currentStep: 0,
-              playedStep: false,
-              time: sequencerRef.current.metronome.nextNoteTime,
-            };
-        }
-        if (typeof graphicsRef.current[idx] === 'undefined') {
-          graphicsRef.current[idx] = {
-            id: idx,
-            queue: [],
-            lastDrawn: 0,
-          };
-        }
-      });
-      */
     }
 
     sequencerRef.current.nextNoteTimes = sequencerRef.current.nextNoteTimes.map((nextNote, idx) => {
