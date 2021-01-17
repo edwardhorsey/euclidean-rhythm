@@ -1,0 +1,23 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+
+  .darkModeButton {
+    margin: 0 auto;
+    padding: 5px;
+  }
+
+  &.light {
+    color: black;
+    background: none;
+  }
+
+  &.dark {
+    color: white;
+    background: darkslategrey;
+  }
+}

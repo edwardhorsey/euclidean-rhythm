@@ -1,0 +1,27 @@
+.PatternStats {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    border: 2px solid black;
+    padding: 10px;
+    text-align: left;
+
+    select {
+        width: 80px;
+    }
+
+    .name {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+        .removeButton {
+            color: white;
+            background-color: rgb(177, 0, 0);
+            width: 25px;
+            height: 25px;
+            margin: auto 0;
+        }
+    }
+}

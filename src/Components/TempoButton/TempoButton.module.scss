@@ -1,0 +1,83 @@
+.TempoButton {
+    input[type=range] {
+      -webkit-appearance: none;
+      margin: 18px 0;
+      width: 240px;
+
+      &::-webkit-slider-thumb {
+        border: 1px solid  rgb(207, 207, 207);
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: rgb(69, 70, 70);
+        -webkit-appearance: none;
+        margin-top: -6px;
+      }
+
+      &::-moz-range-thumb {
+        border: 1px solid  rgb(207, 207, 207);
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background:  rgb(207, 207, 207);
+      }
+
+      &::-ms-thumb {
+        border: 1px solid  rgb(207, 207, 207);
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background:  rgb(207, 207, 207);
+      }
+
+      &::-webkit-slider-runnable-track {
+        width: 240px;
+        height: 8.4px;
+        background: rgb(207, 207, 207);
+        border-radius: 1.3px;
+        
+      }
+      
+      &::-moz-range-track {
+        width: 240px;
+        height: 8.4px;
+        background:  rgb(207, 207, 207);
+        border-radius: 1.3px;
+      }
+
+      &::-ms-track {
+        width: 240px;
+        height: 8.4px;
+        background: transparent;
+        border-color: transparent;
+        border-width: 16px 0;
+        color: transparent;
+      }
+
+      &::-ms-fill-lower {
+        background:  rgb(207, 207, 207);
+        border-radius: 2.6px;
+      }
+
+      &::-ms-fill-upper {
+        background:  rgb(207, 207, 207);
+        border-radius: 2.6px;
+      }
+
+      &:focus {
+        outline: none;
+        
+        &::-webkit-slider-runnable-track {
+          background:  rgb(207, 207, 207);
+        }
+
+        &::-ms-fill-lower {
+          background:  rgb(207, 207, 207);
+        }
+
+        &::-ms-fill-upper {
+          background:  rgb(207, 207, 207);
+        }
+      }
+  }
+}

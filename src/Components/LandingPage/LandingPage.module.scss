@@ -1,0 +1,43 @@
+.LandingPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .seqButtonsRow {
+        button {
+            width: fit-content;
+            padding: 5px;
+            min-width: 80px;
+        }
+    }
+    
+    .metronomeButton {
+        padding: 5px 0 10px;
+
+        button {
+            padding: 5px;
+        }
+    }
+
+    .downloadButton {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px auto;
+        width: 250px;
+
+        button, input {
+            padding: 5px;
+        }
+    }
+    
+    .tempoButton {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        p {
+            margin-right: 10px;
+        }
+    }
+}

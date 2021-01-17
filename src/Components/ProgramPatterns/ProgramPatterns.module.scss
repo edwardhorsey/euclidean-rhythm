@@ -1,0 +1,11 @@
+.ProgramPatterns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+    }
+}
