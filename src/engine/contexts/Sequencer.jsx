@@ -57,6 +57,8 @@ export const Sequencer = ({ children }) => {
     sequencerRef.current.metronome.on = state.metronome;
     sequencerRef.current.tempo = state.tempo;
 
+    console.log(graphicsRef.current);
+
     if (sequencerRef.current.timerID === 'notplaying') {
       resetNextNoteTimes();
       resetGraphics();
@@ -148,8 +150,9 @@ export const Sequencer = ({ children }) => {
           graphicsRef.current[idx].queue.splice(0, 1);
         }
         if (lastNote !== thisNote
-            && rhythm.loopRefs[lastNote]
-            && rhythm.loopRefs[thisNote]) {
+            && rhythm.loopRefs[lastNote].current
+            && rhythm.loopRefs[thisNote].current
+        ) {
           const previousFill = rhythm.loopRefs[thisNote].current.style.fill;
           const previousStroke = rhythm.loopRefs[thisNote].current.style.stroke;
           rhythm.loopRefs[lastNote].current.style.fill = previousFill;

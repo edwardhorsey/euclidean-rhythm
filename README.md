@@ -8,6 +8,7 @@
 - Draw function - add functionality for whenn seq running:
   - change length of loop
 - s3 permissions
+- initiate pipeline
 
 ### Future Plans
 - Select a group of pitches to be played seqeuentially by your rhythm
