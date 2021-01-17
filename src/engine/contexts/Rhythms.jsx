@@ -5,6 +5,7 @@ export const RhythmsContext = React.createContext(null);
 
 export const Rhythms = ({ children }) => {
   const [state, setState] = useState([]);
+  const [refs] = useState([...Array(80)].map(() => createRef()));
 
   const createRhythm = () => {
     if (state.length > 4) return;
@@ -15,7 +16,7 @@ export const Rhythms = ({ children }) => {
         id: state.length,
         freq: pentatonicC[Math.round(Math.random() * pentatonicC.length)].frequency,
         loop: [...Array(randomDivision)].map(() => 1),
-        loopRefs: [...Array(randomDivision)].map(() => createRef()),
+        loopRefs: refs.slice(state.length * 16, (state.length * 16) + 16),
         division: randomDivision,
       },
     ];

@@ -7,6 +7,7 @@ import React, {
 import { useWebAudio } from './WebAudio';
 import { playOscillator } from '../sounds/osc';
 import { useRhythms } from './Rhythms';
+import colours from '../graphics/colours';
 
 export const SequencerContext = React.createContext(null);
 
@@ -46,9 +47,15 @@ export const Sequencer = ({ children }) => {
   };
 
   const resetGraphics = () => {
-    graphicsRef.current = rhythmsRef.current.map(() => (
-      { queue: [], lastDrawn: 0 }
-    ));
+    rhythmsRef.current.forEach((rhythm, idx) => {
+      graphicsRef.current[idx] = { id: rhythm.id, queue: [], lastDrawn: 0 };
+
+      rhythm.loopRefs.forEach((ref) => {
+        if (ref.current) {
+          ref.current.style.fill = colours[idx];
+        }
+      });
+    });
   };
 
   const setTempo = (event) => setState({ ...state, tempo: event.target.value });
@@ -68,6 +75,12 @@ export const Sequencer = ({ children }) => {
       sequencerRef.current.nextNoteTimes = sequencerRef.current.nextNoteTimes
         .filter((nextNote) => ids.includes(nextNote.id));
     }
+
+    if (rhythmsRef.current.length < graphicsRef.current.length) {
+      const ids = rhythmsRef.current.map((rhythm) => rhythm.id);
+      graphicsRef.current = graphicsRef.current
+        .filter((circle) => ids.includes(circle.id));
+    }
   });
 
   const generateNextNotes = () => {
@@ -82,15 +95,24 @@ export const Sequencer = ({ children }) => {
 
       /*
         At beginning of each loop program checks for new patterns and adds
-        temporary variables to nextNoteTime array
+        temporary variables to nextNoteTime array and graphicsRefs Array
       */
       rhythmsRef.current.forEach((_, idx) => {
         if (typeof sequencerRef.current.nextNoteTimes[idx] === 'undefined') {
           sequencerRef.current.nextNoteTimes[idx] = {
+            id: idx,
             currentStep: 0,
             playedStep: false,
             time: sequencerRef.current.metronome.nextNoteTime,
             rounds: 0,
+          };
+        }
+
+        if (typeof graphicsRef.current[idx] === 'undefined') {
+          graphicsRef.current[idx] = {
+            id: idx,
+            queue: [],
+            lastDrawn: 0,
           };
         }
       });
@@ -125,17 +147,18 @@ export const Sequencer = ({ children }) => {
     rhythmsRef.current.forEach((rhythm, idx) => {
       if (typeof sequencerRef.current.nextNoteTimes[idx] !== 'undefined') {
         if (
-          typeof sequencerRef.current.nextNoteTimes[idx] !== 'undefined'
-          && rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep] === 1
+          rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep]
           && !sequencerRef.current.nextNoteTimes[idx].playedStep
         ) {
           /*
             Add scheduled note to graphics queue
           */
-          graphicsRef.current[idx].queue.push({
-            step: sequencerRef.current.nextNoteTimes[idx].currentStep,
-            time: sequencerRef.current.nextNoteTimes[idx].time,
-          });
+          if (typeof graphicsRef.current[idx] !== 'undefined') {
+            graphicsRef.current[idx].queue.push({
+              step: sequencerRef.current.nextNoteTimes[idx].currentStep,
+              time: sequencerRef.current.nextNoteTimes[idx].time,
+            });
+          }
 
           /*
             Schedule note to Oscillator
@@ -161,22 +184,26 @@ export const Sequencer = ({ children }) => {
 
   const draw = () => {
     rhythmsRef.current.forEach((rhythm, idx) => {
-      const lastNote = graphicsRef.current[idx].lastDrawn;
-      let thisNote = lastNote;
+      if (typeof graphicsRef.current[idx] !== 'undefined') {
+        const lastNote = graphicsRef.current[idx].lastDrawn;
+        let thisNote = lastNote;
 
-      while (
-        graphicsRef.current[idx].queue.length
-        && graphicsRef.current[idx].queue[0].time < audioContext.currentTime
-      ) {
-        thisNote = graphicsRef.current[idx].queue[0].step;
-        graphicsRef.current[idx].queue.splice(0, 1);
-      }
-      if (lastNote !== thisNote) {
-        const previousColour = rhythm.loopRefs[thisNote].current.style.fill;
-        rhythm.loopRefs[lastNote].current.style.fill = previousColour;
-        rhythm.loopRefs[thisNote].current.style.fill = 'white';
+        while (
+          graphicsRef.current[idx].queue.length
+          && graphicsRef.current[idx].queue[0].time < audioContext.currentTime
+        ) {
+          thisNote = graphicsRef.current[idx].queue[0].step;
+          graphicsRef.current[idx].queue.splice(0, 1);
+        }
+        if (lastNote !== thisNote
+            && rhythm.loopRefs[lastNote]
+            && rhythm.loopRefs[thisNote]) {
+          const previousColour = colours[idx];
+          rhythm.loopRefs[lastNote].current.style.fill = previousColour;
+          rhythm.loopRefs[thisNote].current.style.fill = 'white';
 
-        graphicsRef.current[idx].lastDrawn = thisNote;
+          graphicsRef.current[idx].lastDrawn = thisNote;
+        }
       }
     });
     requestAnimationFrame(draw);
@@ -232,6 +259,7 @@ export const Sequencer = ({ children }) => {
     sequencerRef.current.timerID = 'notplaying';
 
     resetNextNoteTimes();
+    resetGraphics();
 
     sequencerRef.current.metronome = {
       current16th: 0,

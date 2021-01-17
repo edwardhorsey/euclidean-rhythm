@@ -4,12 +4,15 @@ import Proton from '../Proton';
 import styles from './PatternGraphic.module.scss';
 import colours from '../../engine/graphics/colours';
 
-const createCircles = (numPatterns, svg, coloursArr) => {
+const circleKeys = [...Array(5)].map(() => nanoid());
+const protonKeys = [...Array(80)].map(() => nanoid());
+
+const createCircles = (numPatterns, svg, keys, coloursArr) => {
   console.log('creating circles');
   const { width, height, radiusBase } = svg;
   return [...Array(numPatterns)].map((_, i) => (
     <circle
-      key={nanoid()}
+      key={keys[i]}
       cx={width}
       cy={height}
       r={radiusBase - (i * 15)}
@@ -20,12 +23,12 @@ const createCircles = (numPatterns, svg, coloursArr) => {
   ));
 };
 
-const createCircleProtons = (numProtons, circleIdx, loop, svg, coloursArr) => {
+const createCircleProtons = (numProtons, circleIdx, loop, svg, keys, coloursArr) => {
   console.log('creating circle protons');
   const { width, height, radiusBase } = svg;
   return [...Array(numProtons)].map((_, idx) => (
     <Proton
-      key={nanoid()}
+      key={keys[circleIdx * 16 + idx]}
       circleIdx={circleIdx}
       idx={idx}
       width={width}
@@ -38,10 +41,10 @@ const createCircleProtons = (numProtons, circleIdx, loop, svg, coloursArr) => {
   ));
 };
 
-const createAllProtons = (patterns, svg, coloursArr) => patterns.map((pattern, circleIdx) => {
+const createAllProtons = (patterns, svg, keys, coloursArr) => patterns.map((pattern, circleIdx) => {
   console.log('creating all protons');
   const { division, loop } = pattern;
-  return createCircleProtons(division, circleIdx, loop, svg, coloursArr);
+  return createCircleProtons(division, circleIdx, loop, svg, keys, coloursArr);
 });
 
 export const PatternGraphic = ({ patterns }) => {
@@ -57,11 +60,11 @@ export const PatternGraphic = ({ patterns }) => {
   const { viewbox, svg } = state;
 
   const circles = useMemo(() => (
-    createCircles(patterns.length, svg, colours)
+    createCircles(patterns.length, svg, circleKeys, colours)
   ), [patterns.length, svg, colours]);
 
   const protons = useMemo(() => (
-    createAllProtons(patterns, svg, colours)
+    createAllProtons(patterns, svg, protonKeys, colours)
   ), [patterns, svg, colours]);
 
   return (
