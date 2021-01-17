@@ -15,7 +15,10 @@ export const Rhythms = ({ children }) => {
       {
         id: state.length,
         freq: pentatonicC[Math.round(Math.random() * pentatonicC.length)].frequency,
-        loop: [...Array(randomDivision)].map(() => 1),
+        loop: [...Array(randomDivision)].map(() => {
+          const playing = Math.round(Math.random() * 1);
+          return playing ? 1 : 0;
+        }),
         loopRefs: refs.slice(state.length * 16, (state.length * 16) + 16),
         division: randomDivision,
       },

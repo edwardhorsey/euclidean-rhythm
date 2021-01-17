@@ -1,2 +1,2 @@
-const colours = ['#8A9E55', '#A0BBE9', '#D3EB96', '#EB8D7F', '#A34F41'];
+const colours = ['#3DA32E', '#7D73F0', '#6DF05A', '#F08543', '#A36036'];
 export default colours;

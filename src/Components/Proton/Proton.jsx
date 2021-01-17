@@ -25,7 +25,7 @@ export const Proton = ({
     <circle
       cx={width}
       cy={cy}
-      r="5"
+      r="7"
       transform={transform}
       key={`${deg}${cy}`}
       opacity="1"

@@ -125,22 +125,22 @@ export const Sequencer = ({ children }) => {
 
   const scheduleNotes = () => {
     rhythmsRef.current.forEach((rhythm, idx) => {
+      /*
+        Add scheduled note to graphics queue
+      */
+      if (typeof graphicsRef.current[idx] !== 'undefined') {
+        graphicsRef.current[idx].queue.push({
+          step: sequencerRef.current.nextNoteTimes[idx].currentStep,
+          time: sequencerRef.current.nextNoteTimes[idx].time,
+        });
+      }
+
+      /*
+        Schedule note to Oscillator
+      */
       if (
         rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep]
       ) {
-        /*
-          Add scheduled note to graphics queue
-        */
-        if (typeof graphicsRef.current[idx] !== 'undefined') {
-          graphicsRef.current[idx].queue.push({
-            step: sequencerRef.current.nextNoteTimes[idx].currentStep,
-            time: sequencerRef.current.nextNoteTimes[idx].time,
-          });
-        }
-
-        /*
-          Schedule note to Oscillator
-        */
         playOscillator(audioContext, 'sine', rhythm.freq, sequencerRef.current.nextNoteTimes[idx].time);
       }
     });
@@ -172,9 +172,16 @@ export const Sequencer = ({ children }) => {
         if (lastNote !== thisNote
             && rhythm.loopRefs[lastNote]
             && rhythm.loopRefs[thisNote]) {
-          const previousColour = rhythm.loopRefs[thisNote].current.style.fill;
-          rhythm.loopRefs[lastNote].current.style.fill = previousColour;
-          rhythm.loopRefs[thisNote].current.style.fill = 'white';
+          const previousFill = rhythm.loopRefs[thisNote].current.style.fill;
+          const previousStroke = rhythm.loopRefs[thisNote].current.style.stroke;
+          rhythm.loopRefs[lastNote].current.style.fill = previousFill;
+          rhythm.loopRefs[lastNote].current.style.stroke = previousStroke;
+
+          if (rhythm.loop[thisNote]) {
+            rhythm.loopRefs[thisNote].current.style.fill = 'white';
+          } else {
+            rhythm.loopRefs[thisNote].current.style.stroke = 'white';
+          }
 
           graphicsRef.current[idx].lastDrawn = thisNote;
         }
