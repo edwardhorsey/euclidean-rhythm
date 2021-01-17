@@ -1,17 +1,15 @@
 # Euclidean MIDI generator
-## A sequencer for creating polyrhythms [WIP]
-![WIPImage](https://i.imgur.com/8CTQ1Jp.png)
+## A sequencer for creating euclidean polyrhythms [WIP]
+![WIPImage](https://i.imgur.com/ZUVqV3W.png)
 
 ### Todo
-- React Memo(?) for the SVG circle & protons to reduce rerendering
 - Sound of oscillators:
   - Gain staging for high frequencies
 - Draw function - add functionality for whenn seq running:
-  - change duration of rhythm - reset sequencer to start at 1
+  - change length of loop
 - s3 permissions
 
-### Future Plans 
-- Extend bar lengths of 16 beat unit rhythms to have differentiating [euclidean style] bar lengths (beyond that of 1x and 2x)
+### Future Plans
 - Select a group of pitches to be played seqeuentially by your rhythm
 
 ### Bugs
