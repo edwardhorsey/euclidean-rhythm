@@ -53,7 +53,7 @@ export const PatternGraphic = ({ patterns }) => {
     svg: {
       width: 125,
       height: 125,
-      radiusBase: 120,
+      radiusBase: 110,
     },
   });
 
