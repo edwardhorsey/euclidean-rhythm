@@ -15,7 +15,7 @@ const createCircles = (numPatterns, svg, keys, coloursArr) => {
       key={keys[i]}
       cx={width}
       cy={height}
-      r={radiusBase - (i * 15)}
+      r={radiusBase - (i * 20)}
       stroke={coloursArr[i]}
       strokeWidth="1"
       fill="transparent"
@@ -34,7 +34,7 @@ const createCircleProtons = (numProtons, circleIdx, loop, svg, keys, coloursArr)
       width={width}
       height={height}
       deg={(360 / numProtons) * idx}
-      cy={(height - radiusBase) + (circleIdx * 15)}
+      cy={(height - radiusBase) + (circleIdx * 20)}
       stroke={coloursArr[circleIdx]}
       on={!!loop[idx]}
     />
@@ -49,11 +49,11 @@ const createAllProtons = (patterns, svg, keys, coloursArr) => patterns.map((patt
 
 export const PatternGraphic = ({ patterns }) => {
   const [state] = useState({
-    viewbox: '0 0 200 200',
+    viewbox: '0 0 250 250',
     svg: {
-      width: 100,
-      height: 100,
-      radiusBase: 90,
+      width: 125,
+      height: 125,
+      radiusBase: 120,
     },
   });
 

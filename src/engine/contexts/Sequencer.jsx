@@ -41,7 +41,6 @@ export const Sequencer = ({ children }) => {
         currentStep: 0,
         playedStep: false,
         time: 0,
-        rounds: 0,
       }
     ));
   };
@@ -86,9 +85,10 @@ export const Sequencer = ({ children }) => {
   const generateNextNotes = () => {
     const secondsPerBeat = 60.0 / sequencerRef.current.tempo;
     const wholeBar = secondsPerBeat * 4;
+    const single16thNote = wholeBar / 16;
 
     sequencerRef.current.metronome.current16th += 1;
-    sequencerRef.current.metronome.nextNoteTime += (wholeBar / 16);
+    sequencerRef.current.metronome.nextNoteTime += single16thNote;
 
     if (sequencerRef.current.metronome.current16th === 16) {
       sequencerRef.current.metronome.current16th = 0;
@@ -96,18 +96,15 @@ export const Sequencer = ({ children }) => {
       /*
         At beginning of each loop program checks for new patterns and adds
         temporary variables to nextNoteTime array and graphicsRefs Array
-      */
-      rhythmsRef.current.forEach((_, idx) => {
-        if (typeof sequencerRef.current.nextNoteTimes[idx] === 'undefined') {
-          sequencerRef.current.nextNoteTimes[idx] = {
-            id: idx,
-            currentStep: 0,
-            playedStep: false,
-            time: sequencerRef.current.metronome.nextNoteTime,
-            rounds: 0,
-          };
+        rhythmsRef.current.forEach((_, idx) => {
+          if (typeof sequencerRef.current.nextNoteTimes[idx] === 'undefined') {
+            sequencerRef.current.nextNoteTimes[idx] = {
+              id: idx,
+              currentStep: 0,
+              playedStep: false,
+              time: sequencerRef.current.metronome.nextNoteTime,
+            };
         }
-
         if (typeof graphicsRef.current[idx] === 'undefined') {
           graphicsRef.current[idx] = {
             id: idx,
@@ -116,58 +113,42 @@ export const Sequencer = ({ children }) => {
           };
         }
       });
+      */
     }
 
     sequencerRef.current.nextNoteTimes = sequencerRef.current.nextNoteTimes.map((nextNote, idx) => {
-      if (
-        nextNote.time < (
-          audioContext.currentTime + state.scheduleAheadTime
-        )
-        && nextNote.playedStep
-      ) {
-        const time = nextNote.time + (wholeBar / rhythmsRef.current[idx].division);
-        const playedStep = false;
-        let currentStep = nextNote.currentStep + 1;
-        let { rounds } = nextNote;
+      const time = nextNote.time + single16thNote;
+      let currentStep = nextNote.currentStep + 1;
 
-        if (currentStep >= rhythmsRef.current[idx].division) {
-          currentStep = 0;
-          rounds += 1;
-        }
-
-        return {
-          time, playedStep, currentStep, rounds,
-        };
+      if (currentStep >= rhythmsRef.current[idx].division) {
+        currentStep = 0;
       }
-      return nextNote;
+
+      return {
+        time, currentStep,
+      };
     });
   };
 
   const scheduleNotes = () => {
     rhythmsRef.current.forEach((rhythm, idx) => {
-      if (typeof sequencerRef.current.nextNoteTimes[idx] !== 'undefined') {
-        if (
-          rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep]
-          && !sequencerRef.current.nextNoteTimes[idx].playedStep
-        ) {
-          /*
-            Add scheduled note to graphics queue
-          */
-          if (typeof graphicsRef.current[idx] !== 'undefined') {
-            graphicsRef.current[idx].queue.push({
-              step: sequencerRef.current.nextNoteTimes[idx].currentStep,
-              time: sequencerRef.current.nextNoteTimes[idx].time,
-            });
-          }
-
-          /*
-            Schedule note to Oscillator
-          */
-          playOscillator(audioContext, 'sine', rhythm.freq, sequencerRef.current.nextNoteTimes[idx].time);
-          sequencerRef.current.nextNoteTimes[idx].playedStep = true;
-        } else {
-          sequencerRef.current.nextNoteTimes[idx].playedStep = true;
+      if (
+        rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep]
+      ) {
+        /*
+          Add scheduled note to graphics queue
+        */
+        if (typeof graphicsRef.current[idx] !== 'undefined') {
+          graphicsRef.current[idx].queue.push({
+            step: sequencerRef.current.nextNoteTimes[idx].currentStep,
+            time: sequencerRef.current.nextNoteTimes[idx].time,
+          });
         }
+
+        /*
+          Schedule note to Oscillator
+        */
+        playOscillator(audioContext, 'sine', rhythm.freq, sequencerRef.current.nextNoteTimes[idx].time);
       }
     });
 
@@ -247,7 +228,6 @@ export const Sequencer = ({ children }) => {
         currentStep: 0,
         playedStep: false,
         time: currentTime,
-        rounds: 0,
       }
     ));
 
