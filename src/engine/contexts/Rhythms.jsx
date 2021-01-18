@@ -53,6 +53,12 @@ export const Rhythms = ({ children }) => {
     setState(rhythms);
   };
 
+  const updateLoop = (circleIdx, idx) => {
+    const rhythms = [...state];
+    rhythms[circleIdx].loop[idx] = !rhythms[circleIdx].loop[idx];
+    setState(rhythms);
+  };
+
   const removeRhythm = (patternIdx) => {
     const rhythms = [...state];
     rhythms.splice(patternIdx, 1);
@@ -66,6 +72,7 @@ export const Rhythms = ({ children }) => {
       createRhythm,
       updateDivision,
       updateFrequency,
+      updateLoop,
       removeRhythm,
     }}
     >

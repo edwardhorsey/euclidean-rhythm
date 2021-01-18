@@ -35,12 +35,7 @@ export const Sequencer = ({ children }) => {
 
   const resetNextNoteTimes = () => {
     sequencerRef.current.nextNoteTimes = rhythmsRef.current.map((rhythm) => (
-      {
-        id: rhythm.id,
-        currentStep: 0,
-        playedStep: false,
-        time: 0,
-      }
+      { id: rhythm.id, currentStep: 0 }
     ));
   };
 
@@ -60,6 +55,12 @@ export const Sequencer = ({ children }) => {
     if (sequencerRef.current.timerID === 'notplaying') {
       resetNextNoteTimes();
       resetGraphics();
+    }
+
+    if (rhythmsRef.current.length > sequencerRef.current.nextNoteTimes.length) {
+      sequencerRef.current.nextNoteTimes = rhythmsRef.current.map((_, idx) => (
+        sequencerRef.current.nextNoteTimes[idx] ?? { id: idx, currentStep: 0 }
+      ));
     }
 
     if (rhythmsRef.current.length < sequencerRef.current.nextNoteTimes.length) {
@@ -88,16 +89,13 @@ export const Sequencer = ({ children }) => {
     }
 
     sequencerRef.current.nextNoteTimes = sequencerRef.current.nextNoteTimes.map((nextNote, idx) => {
-      const time = nextNote.time + single16thNote;
       let currentStep = nextNote.currentStep + 1;
 
       if (currentStep >= rhythmsRef.current[idx].division) {
         currentStep = 0;
       }
 
-      return {
-        time, currentStep,
-      };
+      return { ...nextNote, currentStep };
     });
   };
 
@@ -109,17 +107,16 @@ export const Sequencer = ({ children }) => {
       if (typeof graphicsRef.current[idx] !== 'undefined') {
         graphicsRef.current[idx].queue.push({
           step: sequencerRef.current.nextNoteTimes[idx].currentStep,
-          time: sequencerRef.current.nextNoteTimes[idx].time,
+          time: sequencerRef.current.metronome.nextNoteTime,
         });
       }
 
       /*
         Schedule note to Oscillator
       */
-      if (
-        rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep]
+      if (rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep]
       ) {
-        playOscillator(audioContext, 'sine', rhythm.freq, sequencerRef.current.nextNoteTimes[idx].time);
+        playOscillator(audioContext, 'sine', rhythm.freq, sequencerRef.current.metronome.nextNoteTime);
       }
     });
 
@@ -148,8 +145,9 @@ export const Sequencer = ({ children }) => {
           graphicsRef.current[idx].queue.splice(0, 1);
         }
         if (lastNote !== thisNote
-            && rhythm.loopRefs[lastNote]
-            && rhythm.loopRefs[thisNote]) {
+            && rhythm.loopRefs[lastNote].current
+            && rhythm.loopRefs[thisNote].current
+        ) {
           const previousFill = rhythm.loopRefs[thisNote].current.style.fill;
           const previousStroke = rhythm.loopRefs[thisNote].current.style.stroke;
           rhythm.loopRefs[lastNote].current.style.fill = previousFill;
@@ -199,15 +197,7 @@ export const Sequencer = ({ children }) => {
     }
 
     const currentTime = parseFloat(audioContext.currentTime);
-
     sequencerRef.current.metronome.nextNoteTime = currentTime;
-    sequencerRef.current.nextNoteTimes = sequencerRef.current.nextNoteTimes.map(() => (
-      {
-        currentStep: 0,
-        playedStep: false,
-        time: currentTime,
-      }
-    ));
 
     scheduler();
   };

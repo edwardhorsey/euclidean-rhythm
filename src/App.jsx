@@ -25,7 +25,7 @@ function App() {
       <WebAudio>
         <Rhythms>
           <Sequencer>
-            <h3>Euclidean Midi Generator</h3>
+            <h2>Euclidean Midi Generator</h2>
             {darkModeButton}
             <LandingPage />
           </Sequencer>
