@@ -5,11 +5,10 @@
 ### Todo
 - Sound of oscillators:
   - Gain staging for high frequencies
-- Draw function - add functionality for whenn seq running:
-  - change length of loop
+- Draw function - add rhythms to graphicsRef as generated
 - s3 permissions
-- initiate pipeline
-- mute button
+- new pipeline
+- mute / fill / clear buttons for rhythms
 
 ### Future Plans
 - Select a group of pitches to be played seqeuentially by your rhythm
