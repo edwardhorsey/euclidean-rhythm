@@ -64,6 +64,12 @@ export const Sequencer = ({ children }) => {
       resetGraphics();
     }
 
+    if (rhythmsRef.current.length > sequencerRef.current.nextNoteTimes.length) {
+      sequencerRef.current.nextNoteTimes = rhythmsRef.current.map((_, idx) => (
+        sequencerRef.current.nextNoteTimes[idx] ?? { currentStep: 0, playedStep: false }
+      ));
+    }
+
     if (rhythmsRef.current.length < sequencerRef.current.nextNoteTimes.length) {
       const ids = rhythmsRef.current.map((rhythm) => rhythm.id);
       sequencerRef.current.nextNoteTimes = sequencerRef.current.nextNoteTimes
@@ -75,6 +81,9 @@ export const Sequencer = ({ children }) => {
       graphicsRef.current = graphicsRef.current
         .filter((circle) => ids.includes(circle.id));
     }
+
+    console.log(rhythmsRef.current);
+    console.log(sequencerRef.current);
   });
 
   const generateNextNotes = () => {
@@ -104,6 +113,10 @@ export const Sequencer = ({ children }) => {
   };
 
   const scheduleNotes = () => {
+    console.log(rhythmsRef.current.length);
+    console.log(sequencerRef.current.nextNoteTimes.length);
+    console.log(sequencerRef.current.nextNoteTimes);
+
     rhythmsRef.current.forEach((rhythm, idx) => {
       /*
         Add scheduled note to graphics queue
@@ -118,10 +131,9 @@ export const Sequencer = ({ children }) => {
       /*
         Schedule note to Oscillator
       */
-      if (
-        rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep]
+      if (rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep]
       ) {
-        playOscillator(audioContext, 'sine', rhythm.freq, sequencerRef.current.nextNoteTimes[idx].time);
+        playOscillator(audioContext, 'sine', rhythm.freq, sequencerRef.current.metronome.nextNoteTime);
       }
     });
 

@@ -3,7 +3,6 @@ export const getFrequency = [
   {
     'key-number': 99, name: 'B8', octave: 8, frequency: 7902.133,
   },
-  */
   {
     'key-number': 98, name: 'A#8', octave: 8, frequency: 7458.620,
   },
@@ -70,6 +69,7 @@ export const getFrequency = [
   {
     'key-number': 77, name: 'C#7', octave: 7, frequency: 2217.461,
   },
+  */
   {
     'key-number': 76, name: 'C7', octave: 7, frequency: 2093.005,
   },

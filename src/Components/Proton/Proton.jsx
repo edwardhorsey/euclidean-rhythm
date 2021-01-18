@@ -12,12 +12,7 @@ export const Proton = ({
   idx,
 }) => {
   const rhythmsContext = useRhythms();
-
-  const updateLoop = () => {
-    const rhythms = [...rhythmsContext.state];
-    rhythms[circleIdx].loop[idx] = !rhythms[circleIdx].loop[idx];
-    rhythmsContext.setState(rhythms);
-  };
+  const { updateLoop } = rhythmsContext;
 
   const transform = `rotate(${deg}, ${width}, ${height})`;
   const ref = rhythmsContext.state[circleIdx].loopRefs[idx];
@@ -31,7 +26,7 @@ export const Proton = ({
       opacity="1"
       fill={on ? stroke : 'transparent'}
       stroke={stroke}
-      onClick={() => updateLoop()}
+      onClick={() => updateLoop(circleIdx, idx)}
       ref={ref}
     />
   );
