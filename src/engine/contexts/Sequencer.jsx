@@ -35,12 +35,7 @@ export const Sequencer = ({ children }) => {
 
   const resetNextNoteTimes = () => {
     sequencerRef.current.nextNoteTimes = rhythmsRef.current.map((rhythm) => (
-      {
-        id: rhythm.id,
-        currentStep: 0,
-        playedStep: false,
-        time: 0,
-      }
+      { id: rhythm.id, currentStep: 0 }
     ));
   };
 
@@ -57,8 +52,6 @@ export const Sequencer = ({ children }) => {
     sequencerRef.current.metronome.on = state.metronome;
     sequencerRef.current.tempo = state.tempo;
 
-    console.log(graphicsRef.current);
-
     if (sequencerRef.current.timerID === 'notplaying') {
       resetNextNoteTimes();
       resetGraphics();
@@ -66,7 +59,7 @@ export const Sequencer = ({ children }) => {
 
     if (rhythmsRef.current.length > sequencerRef.current.nextNoteTimes.length) {
       sequencerRef.current.nextNoteTimes = rhythmsRef.current.map((_, idx) => (
-        sequencerRef.current.nextNoteTimes[idx] ?? { currentStep: 0, playedStep: false }
+        sequencerRef.current.nextNoteTimes[idx] ?? { id: idx, currentStep: 0 }
       ));
     }
 
@@ -81,9 +74,6 @@ export const Sequencer = ({ children }) => {
       graphicsRef.current = graphicsRef.current
         .filter((circle) => ids.includes(circle.id));
     }
-
-    console.log(rhythmsRef.current);
-    console.log(sequencerRef.current);
   });
 
   const generateNextNotes = () => {
@@ -99,24 +89,17 @@ export const Sequencer = ({ children }) => {
     }
 
     sequencerRef.current.nextNoteTimes = sequencerRef.current.nextNoteTimes.map((nextNote, idx) => {
-      const time = nextNote.time + single16thNote;
       let currentStep = nextNote.currentStep + 1;
 
       if (currentStep >= rhythmsRef.current[idx].division) {
         currentStep = 0;
       }
 
-      return {
-        time, currentStep,
-      };
+      return { ...nextNote, currentStep };
     });
   };
 
   const scheduleNotes = () => {
-    console.log(rhythmsRef.current.length);
-    console.log(sequencerRef.current.nextNoteTimes.length);
-    console.log(sequencerRef.current.nextNoteTimes);
-
     rhythmsRef.current.forEach((rhythm, idx) => {
       /*
         Add scheduled note to graphics queue
@@ -124,7 +107,7 @@ export const Sequencer = ({ children }) => {
       if (typeof graphicsRef.current[idx] !== 'undefined') {
         graphicsRef.current[idx].queue.push({
           step: sequencerRef.current.nextNoteTimes[idx].currentStep,
-          time: sequencerRef.current.nextNoteTimes[idx].time,
+          time: sequencerRef.current.metronome.nextNoteTime,
         });
       }
 
@@ -214,15 +197,7 @@ export const Sequencer = ({ children }) => {
     }
 
     const currentTime = parseFloat(audioContext.currentTime);
-
     sequencerRef.current.metronome.nextNoteTime = currentTime;
-    sequencerRef.current.nextNoteTimes = sequencerRef.current.nextNoteTimes.map(() => (
-      {
-        currentStep: 0,
-        playedStep: false,
-        time: currentTime,
-      }
-    ));
 
     scheduler();
   };
