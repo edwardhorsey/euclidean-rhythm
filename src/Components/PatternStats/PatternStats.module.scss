@@ -16,6 +16,18 @@
         justify-content: space-between;
         width: 100%;
 
+        .clearButton {
+            background-color: rgb(89, 203, 238);
+            width: 35px;
+            height: 25px;
+        }
+
+        .fillButton {
+            background-color: rgb(89, 203, 238);
+            width: 35px;
+            height: 25px;
+        }
+
         .removeButton {
             color: white;
             background-color: rgb(177, 0, 0);

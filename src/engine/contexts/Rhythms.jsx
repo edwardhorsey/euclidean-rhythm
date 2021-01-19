@@ -1,6 +1,12 @@
 import React, { useState, useContext, createRef } from 'react';
 import { pentatonicC } from '../scales/getFrequency';
 
+export const UPLOAD_LOOP_MODES = {
+  Fill: 'fill',
+  Clear: 'clear',
+  Single: 'single',
+};
+
 export const RhythmsContext = React.createContext(null);
 
 export const Rhythms = ({ children }) => {
@@ -48,8 +54,21 @@ export const Rhythms = ({ children }) => {
     const rhythms = [...state];
     const newRhythm = rhythms[patternIdx];
     newRhythm.freq = pentatonicC.find((note) => note.name === name).frequency;
-
     rhythms[patternIdx] = newRhythm;
+    setState(rhythms);
+  };
+
+  const clearLoop = (circleIdx) => {
+    const rhythms = [...state];
+    const { length } = rhythms[circleIdx].loop;
+    rhythms[circleIdx].loop = [...Array(length)].map(() => 0);
+    setState(rhythms);
+  };
+
+  const fillLoop = (circleIdx) => {
+    const rhythms = [...state];
+    const { length } = rhythms[circleIdx].loop;
+    rhythms[circleIdx].loop = [...Array(length)].map(() => 1);
     setState(rhythms);
   };
 
@@ -72,6 +91,8 @@ export const Rhythms = ({ children }) => {
       createRhythm,
       updateDivision,
       updateFrequency,
+      clearLoop,
+      fillLoop,
       updateLoop,
       removeRhythm,
     }}
