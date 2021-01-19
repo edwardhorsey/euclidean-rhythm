@@ -1,11 +1,6 @@
 import React, { useState, useContext, createRef } from 'react';
 import { pentatonicC } from '../scales/getFrequency';
-
-export const UPLOAD_LOOP_MODES = {
-  Fill: 'fill',
-  Clear: 'clear',
-  Single: 'single',
-};
+import { bresenhamEuclidean } from '../scales/getEuclid';
 
 export const RhythmsContext = React.createContext(null);
 
@@ -16,19 +11,18 @@ export const Rhythms = ({ children }) => {
   const createRhythm = () => {
     if (state.length > 4) return;
     const randomDivision = Math.round(Math.random() * 15) + 2;
+    const randomOnsets = Math.round(Math.random() * 10) + 2;
     const rhythms = [
       ...state,
       {
         id: state.length,
         freq: pentatonicC[Math.round(Math.random() * pentatonicC.length)].frequency,
-        loop: [...Array(randomDivision)].map(() => {
-          const playing = Math.round(Math.random() * 1);
-          return playing ? 1 : 0;
-        }),
+        loop: bresenhamEuclidean(randomOnsets, randomDivision),
         loopRefs: refs.slice(state.length * 16, (state.length * 16) + 16),
         division: randomDivision,
       },
     ];
+
     setState(rhythms);
   };
 
