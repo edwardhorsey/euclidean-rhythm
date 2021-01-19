@@ -1,4 +1,3 @@
-// import React, { useState } from 'react';
 import React from 'react';
 import { nanoid } from 'nanoid';
 import styles from './PatternStats.module.scss';
@@ -10,7 +9,13 @@ const beatUnitKeys = [...Array(80)].map(() => nanoid());
 
 export const PatternStats = ({ rhythm, patternIdx }) => {
   const rhythmsContext = useRhythms();
-  const { updateDivision, updateFrequency, removeRhythm } = rhythmsContext;
+  const {
+    updateDivision,
+    updateFrequency,
+    removeRhythm,
+    clearLoop,
+    fillLoop,
+  } = rhythmsContext;
 
   return (
     <article className={styles.PatternStats}>
@@ -19,6 +24,12 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
           Rhythm
           {patternIdx + 1}
         </h3>
+        <button type="button" className={styles.clearButton} onClick={() => clearLoop(patternIdx)}>
+          clear
+        </button>
+        <button type="button" className={styles.fillButton} onClick={() => fillLoop(patternIdx)}>
+          fill
+        </button>
         <button type="button" className={styles.removeButton} onClick={() => removeRhythm(patternIdx)}>
           X
         </button>

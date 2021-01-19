@@ -1,5 +1,6 @@
 import React, { useState, useContext, createRef } from 'react';
 import { pentatonicC } from '../scales/getFrequency';
+import { bresenhamEuclidean } from '../scales/getEuclid';
 
 export const RhythmsContext = React.createContext(null);
 
@@ -10,19 +11,18 @@ export const Rhythms = ({ children }) => {
   const createRhythm = () => {
     if (state.length > 4) return;
     const randomDivision = Math.round(Math.random() * 15) + 2;
+    const randomOnsets = Math.round(Math.random() * 10) + 2;
     const rhythms = [
       ...state,
       {
         id: state.length,
         freq: pentatonicC[Math.round(Math.random() * pentatonicC.length)].frequency,
-        loop: [...Array(randomDivision)].map(() => {
-          const playing = Math.round(Math.random() * 1);
-          return playing ? 1 : 0;
-        }),
+        loop: bresenhamEuclidean(randomOnsets, randomDivision),
         loopRefs: refs.slice(state.length * 16, (state.length * 16) + 16),
         division: randomDivision,
       },
     ];
+
     setState(rhythms);
   };
 
@@ -48,8 +48,21 @@ export const Rhythms = ({ children }) => {
     const rhythms = [...state];
     const newRhythm = rhythms[patternIdx];
     newRhythm.freq = pentatonicC.find((note) => note.name === name).frequency;
-
     rhythms[patternIdx] = newRhythm;
+    setState(rhythms);
+  };
+
+  const clearLoop = (circleIdx) => {
+    const rhythms = [...state];
+    const { length } = rhythms[circleIdx].loop;
+    rhythms[circleIdx].loop = [...Array(length)].map(() => 0);
+    setState(rhythms);
+  };
+
+  const fillLoop = (circleIdx) => {
+    const rhythms = [...state];
+    const { length } = rhythms[circleIdx].loop;
+    rhythms[circleIdx].loop = [...Array(length)].map(() => 1);
     setState(rhythms);
   };
 
@@ -72,6 +85,8 @@ export const Rhythms = ({ children }) => {
       createRhythm,
       updateDivision,
       updateFrequency,
+      clearLoop,
+      fillLoop,
       updateLoop,
       removeRhythm,
     }}
