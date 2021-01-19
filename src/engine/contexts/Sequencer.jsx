@@ -63,6 +63,12 @@ export const Sequencer = ({ children }) => {
       ));
     }
 
+    if (rhythmsRef.current.length > graphicsRef.current.length) {
+      graphicsRef.current = rhythmsRef.current.map((_, idx) => (
+        graphicsRef.current[idx] ?? { queue: [], lastDrawn: 0 }
+      ));
+    }
+
     if (rhythmsRef.current.length < sequencerRef.current.nextNoteTimes.length) {
       const ids = rhythmsRef.current.map((rhythm) => rhythm.id);
       sequencerRef.current.nextNoteTimes = sequencerRef.current.nextNoteTimes
