@@ -15,7 +15,10 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
     removeRhythm,
     clearLoop,
     fillLoop,
+    updateOnset,
   } = rhythmsContext;
+
+  console.log(rhythm.onset);
 
   return (
     <article className={styles.PatternStats}>
@@ -47,6 +50,18 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
       >
         {pentatonicC.map((note, idx) => (
           <option key={frequencyDropdownKey[patternIdx * 16 + idx]} id={idx}>{note.name}</option>
+        ))}
+      </select>
+
+      <p>Onsets:</p>
+
+      <select
+        name={patternIdx}
+        defaultValue={rhythm.onset}
+        onChange={(e) => updateOnset(e.target.value, e.target.name)}
+      >
+        {[...Array(16).keys()].map((_, idx) => (
+          <option key={beatUnitKeys[patternIdx * 16 + idx]}>{idx + 1}</option>
         ))}
       </select>
 

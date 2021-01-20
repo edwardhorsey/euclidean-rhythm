@@ -11,14 +11,15 @@ export const Rhythms = ({ children }) => {
   const createRhythm = () => {
     if (state.length > 4) return;
     const randomDivision = Math.round(Math.random() * 15) + 2;
-    const randomOnsets = Math.round(Math.random() * 10) + 2;
+    const randomOnset = Math.round(Math.random() * 5) + 2;
     const rhythms = [
       ...state,
       {
         id: state.length,
         freq: pentatonicC[Math.round(Math.random() * pentatonicC.length)].frequency,
-        loop: bresenhamEuclidean(randomOnsets, randomDivision),
+        loop: bresenhamEuclidean(randomOnset, randomDivision),
         loopRefs: refs.slice(state.length * 16, (state.length * 16) + 16),
+        onset: randomOnset,
         division: randomDivision,
       },
     ];
@@ -41,6 +42,14 @@ export const Rhythms = ({ children }) => {
     }
 
     rhythms[patternIdx] = newRhythm;
+    setState(rhythms);
+  };
+
+  const updateOnset = (onset, patternIdx) => {
+    const rhythms = [...state];
+    const loop = bresenhamEuclidean(onset, rhythms[patternIdx].division);
+    rhythms[patternIdx].loop = loop;
+    rhythms[patternIdx].onset = onset;
     setState(rhythms);
   };
 
@@ -84,6 +93,7 @@ export const Rhythms = ({ children }) => {
       setState,
       createRhythm,
       updateDivision,
+      updateOnset,
       updateFrequency,
       clearLoop,
       fillLoop,
