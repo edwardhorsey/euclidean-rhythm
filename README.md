@@ -8,7 +8,8 @@
 - Draw function - add rhythms to graphicsRef as generated
 - s3 permissions
 - new pipeline
-- mute / fill / clear buttons for rhythms
+- mute
+- nudge pattern L / R 
 
 ### Future Plans
 - Select a group of pitches to be played seqeuentially by your rhythm

@@ -4,8 +4,8 @@ import styles from './PatternStats.module.scss';
 import { useRhythms } from '../../engine/contexts/Rhythms';
 import { findNoteName, pentatonicC } from '../../engine/scales/getFrequency';
 
-const frequencyDropdownKey = [...Array(80)].map(() => nanoid());
-const beatUnitKeys = [...Array(80)].map(() => nanoid());
+const frequencyDropdownKey = [...Array(160)].map(() => nanoid());
+const beatUnitKeys = [...Array(160)].map(() => nanoid());
 
 export const PatternStats = ({ rhythm, patternIdx }) => {
   const rhythmsContext = useRhythms();
@@ -15,6 +15,7 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
     removeRhythm,
     clearLoop,
     fillLoop,
+    muteRhythm,
     updateOnset,
   } = rhythmsContext;
 
@@ -33,14 +34,16 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
         <button type="button" className={styles.fillButton} onClick={() => fillLoop(patternIdx)}>
           fill
         </button>
+        <button type="button" className={styles.muteButton} onClick={() => muteRhythm(patternIdx)}>
+          mute
+        </button>
         <button type="button" className={styles.removeButton} onClick={() => removeRhythm(patternIdx)}>
           X
         </button>
       </div>
 
       <p>
-        Frequency:
-        {rhythm.freq}
+        Note:
       </p>
 
       <select
@@ -49,7 +52,7 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
         onChange={(e) => updateFrequency(e.target.value, e.target.name)}
       >
         {pentatonicC.map((note, idx) => (
-          <option key={frequencyDropdownKey[patternIdx * 16 + idx]} id={idx}>{note.name}</option>
+          <option key={frequencyDropdownKey[patternIdx * 32 + idx]} id={idx}>{note.name}</option>
         ))}
       </select>
 
@@ -60,8 +63,8 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
         defaultValue={rhythm.onset}
         onChange={(e) => updateOnset(e.target.value, e.target.name)}
       >
-        {[...Array(16).keys()].map((_, idx) => (
-          <option key={beatUnitKeys[patternIdx * 16 + idx]}>{idx + 1}</option>
+        {[...Array(32).keys()].map((_, idx) => (
+          <option key={beatUnitKeys[patternIdx * 32 + idx]}>{idx + 1}</option>
         ))}
       </select>
 
@@ -72,8 +75,8 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
         defaultValue={rhythm.division}
         onChange={(e) => updateDivision(e.target.value, e.target.name)}
       >
-        {[...Array(16).keys()].map((_, idx) => (
-          <option key={beatUnitKeys[patternIdx * 16 + idx]}>{idx + 1}</option>
+        {[...Array(30).keys()].map((_, idx) => (
+          <option key={beatUnitKeys[patternIdx * 32 + idx]}>{idx + 3}</option>
         ))}
       </select>
     </article>

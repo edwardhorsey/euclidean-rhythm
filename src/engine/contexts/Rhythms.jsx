@@ -6,21 +6,22 @@ export const RhythmsContext = React.createContext(null);
 
 export const Rhythms = ({ children }) => {
   const [state, setState] = useState([]);
-  const [refs] = useState([...Array(80)].map(() => createRef()));
+  const [refs] = useState([...Array(160)].map(() => createRef()));
 
   const createRhythm = () => {
     if (state.length > 4) return;
-    const randomDivision = Math.round(Math.random() * 15) + 2;
-    const randomOnset = Math.round(Math.random() * 5) + 2;
+    const randomDivision = Math.round(Math.random() * 31) + 2;
+    const randomOnset = Math.round(Math.random() * 11) + 2;
     const rhythms = [
       ...state,
       {
         id: state.length,
         freq: pentatonicC[Math.round(Math.random() * pentatonicC.length)].frequency,
         loop: bresenhamEuclidean(randomOnset, randomDivision),
-        loopRefs: refs.slice(state.length * 16, (state.length * 16) + 16),
+        loopRefs: refs.slice(state.length * 32, (state.length * 32) + 32),
         onset: randomOnset,
         division: randomDivision,
+        mute: false,
       },
     ];
 
@@ -31,16 +32,7 @@ export const Rhythms = ({ children }) => {
     const rhythms = [...state];
     const newRhythm = rhythms[patternIdx];
     newRhythm.division = Number(division);
-
-    if (newRhythm.loop.length > division) {
-      newRhythm.loop.splice(division);
-    } else if (newRhythm.loop.length < division) {
-      while (newRhythm.loop.length < division) {
-        newRhythm.loop.push(1);
-        newRhythm.loopRefs.push(createRef());
-      }
-    }
-
+    newRhythm.loop = bresenhamEuclidean(newRhythm.onset, division);
     rhythms[patternIdx] = newRhythm;
     setState(rhythms);
   };
@@ -75,6 +67,12 @@ export const Rhythms = ({ children }) => {
     setState(rhythms);
   };
 
+  const muteRhythm = (circleIdx) => {
+    const rhythms = [...state];
+    rhythms[circleIdx].mute = !rhythms[circleIdx].mute;
+    setState(rhythms);
+  };
+
   const updateLoop = (circleIdx, idx) => {
     const rhythms = [...state];
     rhythms[circleIdx].loop[idx] = !rhythms[circleIdx].loop[idx];
@@ -97,6 +95,7 @@ export const Rhythms = ({ children }) => {
       updateFrequency,
       clearLoop,
       fillLoop,
+      muteRhythm,
       updateLoop,
       removeRhythm,
     }}

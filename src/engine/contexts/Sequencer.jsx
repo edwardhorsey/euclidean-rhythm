@@ -120,7 +120,7 @@ export const Sequencer = ({ children }) => {
       /*
         Schedule note to Oscillator
       */
-      if (rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep]
+      if (!rhythm.mute && rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep]
       ) {
         playOscillator(audioContext, 'sine', rhythm.freq, sequencerRef.current.metronome.nextNoteTime);
       }

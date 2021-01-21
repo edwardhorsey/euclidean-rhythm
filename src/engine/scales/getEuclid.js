@@ -3,7 +3,7 @@ export const bresenhamEuclidean = (onsets, totalPulses) => {
   const pattern = [];
 
   for (let i = 0; i < totalPulses; i += 1) {
-    const xVal = Math.floor((onsets / totalPulses) * i);
+    const xVal = Math.floor(((onsets + 1) / totalPulses) * i);
     pattern.push(xVal === previous ? 0 : 1);
     previous = xVal;
   }
