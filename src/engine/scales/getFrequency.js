@@ -304,7 +304,6 @@ export const getFrequency = [
 
 const createCPentatonic = () => getFrequency.filter((note) => ([4, 6, 8, 11, 1].includes(note['key-number'] % 12)));
 export const pentatonicC = createCPentatonic();
-console.log(pentatonicC);
 
 export const findNoteName = (rhythm) => (
   pentatonicC.find((note) => note.frequency === rhythm.freq).name

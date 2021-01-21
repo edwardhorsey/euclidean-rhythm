@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { nanoid } from 'nanoid';
 import Proton from '../Proton';
 import styles from './PatternGraphic.module.scss';
-import { colours, grayscale } from '../../engine/graphics/colours';
+import { colours } from '../../engine/graphics/colours';
 
 const SIDE = 300;
 const RADIUS = 0.9 * SIDE;

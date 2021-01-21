@@ -19,8 +19,6 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
     updateOnset,
   } = rhythmsContext;
 
-  console.log(rhythm.onset);
-
   return (
     <article className={styles.PatternStats}>
       <div className={styles.name}>
@@ -42,43 +40,54 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
         </button>
       </div>
 
-      <p>
-        Note:
-      </p>
+      <div className={styles.dropdowns}>
+        <div>
+          <p>
+            Note:
+          </p>
+          <select
+            name={patternIdx}
+            defaultValue={findNoteName(rhythm)}
+            onChange={(e) => updateFrequency(e.target.value, e.target.name)}
+          >
+            {pentatonicC.map((note, idx) => (
+              <option key={frequencyDropdownKey[patternIdx * 32 + idx]} id={idx}>
+                {note.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <select
-        name={patternIdx}
-        defaultValue={findNoteName(rhythm)}
-        onChange={(e) => updateFrequency(e.target.value, e.target.name)}
-      >
-        {pentatonicC.map((note, idx) => (
-          <option key={frequencyDropdownKey[patternIdx * 32 + idx]} id={idx}>{note.name}</option>
-        ))}
-      </select>
+        <div>
+          <p>Onsets:</p>
+          <select
+            name={patternIdx}
+            defaultValue={rhythm.onset}
+            onChange={(e) => updateOnset(e.target.value, e.target.name)}
+          >
+            {[...Array(32).keys()].map((_, idx) => (
+              <option key={beatUnitKeys[patternIdx * 32 + idx]}>
+                {idx + 1}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <p>Onsets:</p>
-
-      <select
-        name={patternIdx}
-        defaultValue={rhythm.onset}
-        onChange={(e) => updateOnset(e.target.value, e.target.name)}
-      >
-        {[...Array(32).keys()].map((_, idx) => (
-          <option key={beatUnitKeys[patternIdx * 32 + idx]}>{idx + 1}</option>
-        ))}
-      </select>
-
-      <p>Loop length:</p>
-
-      <select
-        name={patternIdx}
-        defaultValue={rhythm.division}
-        onChange={(e) => updateDivision(e.target.value, e.target.name)}
-      >
-        {[...Array(30).keys()].map((_, idx) => (
-          <option key={beatUnitKeys[patternIdx * 32 + idx]}>{idx + 3}</option>
-        ))}
-      </select>
+        <div>
+          <p>Loop length:</p>
+          <select
+            name={patternIdx}
+            defaultValue={rhythm.division}
+            onChange={(e) => updateDivision(e.target.value, e.target.name)}
+          >
+            {[...Array(30).keys()].map((_, idx) => (
+              <option key={beatUnitKeys[patternIdx * 32 + idx]}>
+                {idx + 3}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
     </article>
   );
 };
