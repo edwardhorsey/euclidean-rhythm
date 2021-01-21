@@ -2,10 +2,14 @@ import React, { useMemo, useState } from 'react';
 import { nanoid } from 'nanoid';
 import Proton from '../Proton';
 import styles from './PatternGraphic.module.scss';
-import colours from '../../engine/graphics/colours';
+import { colours } from '../../engine/graphics/colours';
+
+const SIDE = 300;
+const RADIUS = 0.9 * SIDE;
+const CIRCLE_GAP = 40;
 
 const circleKeys = [...Array(5)].map(() => nanoid());
-const protonKeys = [...Array(80)].map(() => nanoid());
+const protonKeys = [...Array(160)].map(() => nanoid());
 
 const createCircles = (numPatterns, svg, keys, coloursArr) => {
   const { width, height, radiusBase } = svg;
@@ -14,7 +18,7 @@ const createCircles = (numPatterns, svg, keys, coloursArr) => {
       key={keys[i]}
       cx={width}
       cy={height}
-      r={radiusBase - (i * 30)}
+      r={radiusBase - (i * CIRCLE_GAP)}
       stroke={coloursArr[i]}
       strokeWidth="1"
       fill="transparent"
@@ -26,13 +30,13 @@ const createCircleProtons = (numProtons, circleIdx, loop, svg, keys, coloursArr)
   const { width, height, radiusBase } = svg;
   return [...Array(numProtons)].map((_, idx) => (
     <Proton
-      key={keys[circleIdx * 16 + idx]}
+      key={keys[circleIdx * 32 + idx]}
       circleIdx={circleIdx}
       idx={idx}
       width={width}
       height={height}
       deg={(360 / numProtons) * idx}
-      cy={(height - radiusBase) + (circleIdx * 30)}
+      cy={(height - radiusBase) + (circleIdx * CIRCLE_GAP)}
       stroke={coloursArr[circleIdx]}
       on={!!loop[idx]}
     />
@@ -46,11 +50,11 @@ const createAllProtons = (patterns, svg, keys, coloursArr) => patterns.map((patt
 
 export const PatternGraphic = ({ patterns }) => {
   const [state] = useState({
-    viewbox: '0 0 400 400',
+    viewbox: `0 0 ${2 * SIDE} ${2 * SIDE}`,
     svg: {
-      width: 200,
-      height: 200,
-      radiusBase: 180,
+      width: SIDE,
+      height: SIDE,
+      radiusBase: RADIUS,
     },
   });
 

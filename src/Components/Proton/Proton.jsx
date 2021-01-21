@@ -1,6 +1,8 @@
 import React from 'react';
 import { useRhythms } from '../../engine/contexts/Rhythms';
 
+const PROTON_SIZE = 12;
+
 export const Proton = ({
   width,
   height,
@@ -20,7 +22,7 @@ export const Proton = ({
     <circle
       cx={width}
       cy={cy}
-      r="10"
+      r={PROTON_SIZE}
       transform={transform}
       key={`${deg}${cy}`}
       opacity="1"
