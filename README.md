@@ -5,11 +5,9 @@
 ### Todo
 - Sound of oscillators:
   - Gain staging for high frequencies
-- Draw function - add rhythms to graphicsRef as generated
-- s3 permissions
-- new pipeline
-- mute
+- new lambda
 - nudge pattern L / R 
+- import colours to sass
 
 ### Future Plans
 - Select a group of pitches to be played seqeuentially by your rhythm
