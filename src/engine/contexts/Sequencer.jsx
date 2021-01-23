@@ -162,19 +162,32 @@ export const Sequencer = ({ children }) => {
           graphicsRef.current[idx].queue.splice(0, 1);
         }
         if (lastNote !== thisNote
-            && rhythm.loopRefs[lastNote].current
-            && rhythm.loopRefs[thisNote].current
+          && rhythm.loopRefs[lastNote].current
+          && rhythm.loopRefs[thisNote].current
         ) {
           const previousFill = rhythm.loopRefs[thisNote].current.style.fill;
           const previousStroke = rhythm.loopRefs[thisNote].current.style.stroke;
           rhythm.loopRefs[lastNote].current.style.fill = previousFill;
           rhythm.loopRefs[lastNote].current.style.stroke = previousStroke;
 
-          if (rhythm.loop[thisNote]) {
+          if (rhythm.loop[thisNote] === 1) {
             rhythm.loopRefs[thisNote].current.style.fill = 'white';
           } else {
             rhythm.loopRefs[thisNote].current.style.stroke = 'white';
           }
+
+          console.log('                                      $EGIN');
+          console.log('previous version index ', lastNote);
+          console.log('previous version fill', previousFill);
+          console.log('previous version fill', previousStroke);
+          console.log('previous version', rhythm.loopRefs[lastNote].current);
+
+          console.log('GAP');
+
+          console.log('this version index ', thisNote);
+          console.log('this version', rhythm.loopRefs[thisNote].current);
+
+          console.log('                bit');
 
           graphicsRef.current[idx].lastDrawn = thisNote;
         }
