@@ -5,28 +5,40 @@ import styles from './PatternGraphic.module.scss';
 import { colours } from '../../engine/graphics/colours';
 import { SIDE, RADIUS, CIRCLE_GAP } from '../../engine/graphics/constants';
 
+const bit = 'A';
+console.log(colours[bit]);
+
 const circleKeys = [...Array(5)].map(() => nanoid());
 const protonKeys = [...Array(160)].map(() => nanoid());
 
-const createCircles = (numPatterns, svg, keys, coloursArr) => {
+const createCircles = (patterns, svg, keys, coloursArr) => {
   const {
     width, height, radiusBase, circleGap,
   } = svg;
 
-  return [...Array(numPatterns)].map((_, idx) => (
+  return patterns.map((pattern, idx) => (
     <circle
       key={keys[idx]}
       cx={width}
       cy={height}
-      r={radiusBase - (idx * circleGap[numPatterns - 1])}
-      stroke={coloursArr[idx]}
+      r={radiusBase - (idx * circleGap[patterns.length - 1])}
+      stroke={coloursArr[pattern.id]}
       strokeWidth="1"
       fill="transparent"
     />
   ));
 };
 
-const createCircleProtons = (numPatterns, numProtons, circleIdx, loop, svg, keys, coloursArr) => {
+const createCircleProtons = (
+  numPatterns,
+  numProtons,
+  circleIdx,
+  loop,
+  svg,
+  keys,
+  coloursArr,
+  patternId,
+) => {
   const {
     width, height, radiusBase, circleGap,
   } = svg;
@@ -40,16 +52,16 @@ const createCircleProtons = (numPatterns, numProtons, circleIdx, loop, svg, keys
       height={height}
       deg={(360 / numProtons) * idx}
       cy={(height - radiusBase) + (circleIdx * circleGap[numPatterns - 1])}
-      stroke={coloursArr[circleIdx]}
+      stroke={coloursArr[patternId]}
       on={!!loop[idx]}
     />
   ));
 };
 
 const createAllProtons = (patterns, svg, keys, coloursArr) => patterns.map((pattern, circleIdx) => {
-  const { division, loop } = pattern;
+  const { division, loop, id } = pattern;
 
-  return createCircleProtons(patterns.length, division, circleIdx, loop, svg, keys, coloursArr);
+  return createCircleProtons(patterns.length, division, circleIdx, loop, svg, keys, coloursArr, id);
 });
 
 export const PatternGraphic = ({ patterns }) => {
@@ -66,8 +78,8 @@ export const PatternGraphic = ({ patterns }) => {
   const { viewbox, svg } = state;
 
   const circles = useMemo(() => (
-    createCircles(patterns.length, svg, circleKeys, colours)
-  ), [patterns.length, svg, colours]);
+    createCircles(patterns, svg, circleKeys, colours)
+  ), [patterns, svg, colours]);
 
   const protons = useMemo(() => (
     createAllProtons(patterns, svg, protonKeys, colours)

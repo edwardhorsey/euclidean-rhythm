@@ -7,18 +7,30 @@ export const RhythmsContext = React.createContext(null);
 export const Rhythms = ({ children }) => {
   const [state, setState] = useState([]);
   const [refs] = useState([...Array(5)].map(() => ([...Array(32)].map(() => createRef()))));
+  const [rhythmIds] = useState(['A', 'B', 'C', 'D', 'E']);
   console.log(state);
   console.log(refs);
+
+  const provideRhythmId = () => {
+    if (state.length === 0) return rhythmIds[0];
+    const existingIds = state.map((rhythm) => rhythm.id);
+    const availableIds = rhythmIds.filter((id) => !existingIds.includes(id));
+    return availableIds[0];
+  };
 
   const createRhythm = () => {
     if (state.length > 4) return;
     const randomDivision = Math.round(Math.random() * 31) + 2;
     const randomOnset = Math.round(Math.random() * randomDivision) + 1;
     const randomFreq = Math.round(Math.random() * pentatonicC.length - 1);
+    console.log(randomFreq);
+    console.log(pentatonicC.length);
+    console.log(pentatonicC[randomFreq]);
+
     const rhythms = [
       ...state,
       {
-        id: state.length,
+        id: provideRhythmId(),
         freq: pentatonicC[randomFreq].frequency,
         loop: bresenhamEuclidean(randomOnset, randomDivision),
         loopRefs: refs[state.length],

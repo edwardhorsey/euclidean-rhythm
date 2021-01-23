@@ -24,7 +24,7 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
       <div className={styles.name}>
         <h3>
           Rhythm
-          {patternIdx + 1}
+          {rhythm.id}
         </h3>
         <button type="button" className={styles.clearButton} onClick={() => clearLoop(patternIdx)}>
           clear
