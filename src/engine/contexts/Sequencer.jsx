@@ -7,6 +7,7 @@ import React, {
 import { useWebAudio } from './WebAudio';
 import { playOscillator } from '../sounds/osc';
 import { useRhythms } from './Rhythms';
+import { colours } from '../graphics/colours';
 
 export const SequencerContext = React.createContext(null);
 
@@ -40,9 +41,19 @@ export const Sequencer = ({ children }) => {
   };
 
   const resetGraphics = () => {
-    graphicsRef.current = rhythmsRef.current.map(() => (
-      { queue: [], lastDrawn: 0 }
-    ));
+    rhythmsRef.current.forEach((rhythm, idx) => {
+      rhythm.loop.forEach((step, stepNum) => {
+        rhythm.loopRefs[stepNum].current.style.stroke = colours[rhythm.id];
+
+        if (step) {
+          rhythm.loopRefs[stepNum].current.style.fill = colours[rhythm.id];
+        } else {
+          rhythm.loopRefs[stepNum].current.style.fill = '';
+        }
+      });
+
+      graphicsRef.current[idx] = { queue: [], lastDrawn: 0 };
+    });
   };
 
   const setTempo = (event) => setState({ ...state, tempo: event.target.value });

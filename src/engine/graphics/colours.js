@@ -1,2 +1,23 @@
-export const colours = ['#3DA32E', '#7D73F0', '#6DF05A', '#F08543', '#A36036'];
-export const grayscale = ['#9ca39b', '#e0dfed', '#e5f0e4', '#ede3dd', '#a8a29e'];
+export const colours = {
+  A: '#3DA32E',
+  B: '#7D73F0',
+  C: '#6DF05A',
+  D: '#F08543',
+  E: '#A36036',
+};
+
+export const grayscale = {
+  A: '#9ca39b',
+  B: '#e0dfed',
+  C: '#e5f0e4',
+  D: '#ede3dd',
+  E: '#a8a29e',
+};
+
+export const minimalMode = {
+  A: '',
+  B: '',
+  C: '',
+  D: '',
+  E: '',
+};

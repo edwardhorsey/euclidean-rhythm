@@ -24,7 +24,7 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
       <div className={styles.name}>
         <h3>
           Rhythm
-          {patternIdx + 1}
+          {rhythm.id}
         </h3>
         <button type="button" className={styles.clearButton} onClick={() => clearLoop(patternIdx)}>
           clear
@@ -48,7 +48,7 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
           <select
             name={patternIdx}
             defaultValue={findNoteName(rhythm)}
-            onChange={(e) => updateFrequency(e.target.value, e.target.name)}
+            onChange={(e) => updateFrequency(Number(e.target.value), e.target.name)}
           >
             {pentatonicC.map((note, idx) => (
               <option key={frequencyDropdownKey[patternIdx * 32 + idx]} id={idx}>
@@ -63,9 +63,9 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
           <select
             name={patternIdx}
             defaultValue={rhythm.onset}
-            onChange={(e) => updateOnset(e.target.value, e.target.name)}
+            onChange={(e) => updateOnset(Number(e.target.value), e.target.name)}
           >
-            {[...Array(32).keys()].map((_, idx) => (
+            {[...Array(rhythm.division - 1).keys()].map((_, idx) => (
               <option key={beatUnitKeys[patternIdx * 32 + idx]}>
                 {idx + 1}
               </option>
@@ -78,7 +78,7 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
           <select
             name={patternIdx}
             defaultValue={rhythm.division}
-            onChange={(e) => updateDivision(e.target.value, e.target.name)}
+            onChange={(e) => updateDivision(Number(e.target.value), e.target.name)}
           >
             {[...Array(30).keys()].map((_, idx) => (
               <option key={beatUnitKeys[patternIdx * 32 + idx]}>

@@ -26,3 +26,4 @@ yarn-error.log*
 .eslintcache
 debug.log
 yarn.lock
+REFACTORING*
