@@ -1,7 +1,6 @@
 import React from 'react';
 import { useRhythms } from '../../engine/contexts/Rhythms';
-
-const PROTON_SIZE = 12;
+import { PROTON_SIZE } from '../../engine/graphics/constants';
 
 export const Proton = ({
   width,
