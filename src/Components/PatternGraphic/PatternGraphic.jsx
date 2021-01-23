@@ -27,11 +27,9 @@ const createCircles = (numPatterns, svg, keys, coloursArr) => {
 };
 
 const createCircleProtons = (numPatterns, numProtons, circleIdx, loop, svg, keys, coloursArr) => {
-  console.log(svg);
   const {
     width, height, radiusBase, circleGap,
   } = svg;
-  console.log(circleGap);
 
   return [...Array(numProtons)].map((_, idx) => (
     <Proton
@@ -66,7 +64,6 @@ export const PatternGraphic = ({ patterns }) => {
   });
 
   const { viewbox, svg } = state;
-  console.log(state);
 
   const circles = useMemo(() => (
     createCircles(patterns.length, svg, circleKeys, colours)
