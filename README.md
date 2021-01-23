@@ -14,4 +14,3 @@
 
 ### Bugs
 - Not soo many 🤠
->>>>>>> feature/onset
