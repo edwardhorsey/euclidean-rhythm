@@ -7,7 +7,6 @@ import React, {
 import { useWebAudio } from './WebAudio';
 import { playOscillator } from '../sounds/osc';
 import { useRhythms } from './Rhythms';
-import { colours } from '../graphics/colours';
 
 export const SequencerContext = React.createContext(null);
 
@@ -40,19 +39,13 @@ export const Sequencer = ({ children }) => {
     ));
   };
 
-  const resetGraphics = () => {
+  const resetGraphicsRef = () => {
     rhythmsRef.current.forEach((rhythm, idx) => {
-      rhythm.loop.forEach((step, stepNum) => {
-        rhythm.loopRefs[stepNum].current.style.stroke = colours[rhythm.id];
-
-        if (step) {
-          rhythm.loopRefs[stepNum].current.style.fill = colours[rhythm.id];
-        } else {
-          rhythm.loopRefs[stepNum].current.style.fill = '';
-        }
+      rhythm.loop.forEach((_, stepNum) => {
+        rhythm.loopRefs[stepNum].current.style = '';
       });
 
-      graphicsRef.current[idx] = { queue: [], lastDrawn: 0 };
+      graphicsRef.current[idx] = { id: rhythm.id, queue: [], lastDrawn: 0 };
     });
   };
 
@@ -65,19 +58,19 @@ export const Sequencer = ({ children }) => {
 
     if (sequencerRef.current.timerID === 'notplaying') {
       resetNextNoteTimes();
-      resetGraphics();
+      resetGraphicsRef();
     }
 
-    if (rhythmsRef.current.length > sequencerRef.current.nextNoteTimes.length) {
-      sequencerRef.current.nextNoteTimes = rhythmsRef.current.map((_, idx) => (
-        sequencerRef.current.nextNoteTimes[idx] ?? { id: idx, currentStep: 0 }
-      ));
-    }
+    if (rhythmsRef.current.length > sequencerRef.current.nextNoteTimes.length
+      || rhythmsRef.current.length > graphicsRef.current.length
+    ) {
+      rhythmsRef.current.forEach((rhythm, idx) => {
+        sequencerRef.current.nextNoteTimes[idx] = sequencerRef.current.nextNoteTimes[idx]
+          ?? { id: rhythm.id, currentStep: 0 };
 
-    if (rhythmsRef.current.length > graphicsRef.current.length) {
-      graphicsRef.current = rhythmsRef.current.map((_, idx) => (
-        graphicsRef.current[idx] ?? { queue: [], lastDrawn: 0 }
-      ));
+        graphicsRef.current[idx] = graphicsRef.current[idx]
+          ?? { id: rhythm.id, queue: [], lastDrawn: 0 };
+      });
     }
 
     if (rhythmsRef.current.length < sequencerRef.current.nextNoteTimes.length) {
@@ -162,15 +155,15 @@ export const Sequencer = ({ children }) => {
           graphicsRef.current[idx].queue.splice(0, 1);
         }
         if (lastNote !== thisNote
-            && rhythm.loopRefs[lastNote].current
-            && rhythm.loopRefs[thisNote].current
+          && rhythm.loopRefs[lastNote].current
+          && rhythm.loopRefs[thisNote].current
         ) {
           const previousFill = rhythm.loopRefs[thisNote].current.style.fill;
           const previousStroke = rhythm.loopRefs[thisNote].current.style.stroke;
           rhythm.loopRefs[lastNote].current.style.fill = previousFill;
           rhythm.loopRefs[lastNote].current.style.stroke = previousStroke;
 
-          if (rhythm.loop[thisNote]) {
+          if (rhythm.loop[thisNote] === 1) {
             rhythm.loopRefs[thisNote].current.style.fill = 'white';
           } else {
             rhythm.loopRefs[thisNote].current.style.stroke = 'white';
@@ -224,7 +217,7 @@ export const Sequencer = ({ children }) => {
     sequencerRef.current.timerID = 'notplaying';
 
     resetNextNoteTimes();
-    resetGraphics();
+    resetGraphicsRef();
 
     sequencerRef.current.metronome = {
       current16th: 0,
