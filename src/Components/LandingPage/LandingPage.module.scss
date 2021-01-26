@@ -4,30 +4,26 @@
     justify-content: center;
 
     .seqButtonsRow {
+        display: flex;
+        justify-content: center;
+
         button {
             width: fit-content;
+            height: fit-content;
             padding: 5px;
             min-width: 80px;
         }
-    }
-    
-    .metronomeButton {
-        padding: 5px 0 10px;
 
-        button {
+        .downloadButton {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-end;
+
+        input {
             padding: 5px;
         }
     }
-
-    .downloadButton {
-        display: flex;
-        justify-content: space-between;
-        margin: 10px auto;
-        width: 250px;
-
-        button, input {
-            padding: 5px;
-        }
     }
     
     .tempoButton {

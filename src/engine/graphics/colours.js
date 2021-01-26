@@ -13,11 +13,3 @@ export const grayscale = {
   D: '#ede3dd',
   E: '#a8a29e',
 };
-
-export const minimalMode = {
-  A: '',
-  B: '',
-  C: '',
-  D: '',
-  E: '',
-};
