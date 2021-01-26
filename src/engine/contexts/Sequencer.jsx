@@ -65,11 +65,13 @@ export const Sequencer = ({ children }) => {
       || rhythmsRef.current.length > graphicsRef.current.length
     ) {
       rhythmsRef.current.forEach((rhythm, idx) => {
-        sequencerRef.current.nextNoteTimes[idx] = sequencerRef.current.nextNoteTimes[idx]
-          ?? { id: rhythm.id, currentStep: 0 };
+        sequencerRef.current.nextNoteTimes[idx] = (
+          sequencerRef.current.nextNoteTimes[idx] ?? { id: rhythm.id, currentStep: 0 }
+        );
 
-        graphicsRef.current[idx] = graphicsRef.current[idx]
-          ?? { id: rhythm.id, queue: [], lastDrawn: 0 };
+        graphicsRef.current[idx] = (
+          graphicsRef.current[idx] ?? { id: rhythm.id, queue: [], lastDrawn: 0 }
+        );
       });
     }
 
@@ -173,6 +175,7 @@ export const Sequencer = ({ children }) => {
         }
       }
     });
+
     requestAnimationFrame(draw);
   };
 
@@ -225,10 +228,7 @@ export const Sequencer = ({ children }) => {
     };
   };
 
-  const toggleMetronome = () => setState({
-    ...state,
-    metronome: !state.metronome,
-  });
+  const toggleMetronome = () => setState({ ...state, metronome: !state.metronome });
 
   return (
     <SequencerContext.Provider value={{

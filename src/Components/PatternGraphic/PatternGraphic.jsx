@@ -9,7 +9,6 @@ const circleKeys = [...Array(5)].map(() => nanoid());
 const protonKeys = [...Array(160)].map(() => nanoid());
 
 const createCircles = (patterns, svg, keys, coloursArr) => {
-  console.log('creating circles');
   const {
     width, height, radiusBase, circleGap,
   } = svg;
@@ -57,7 +56,6 @@ const createCircleProtons = (
 };
 
 const createAllProtons = (patterns, svg, keys, coloursArr) => patterns.map((pattern, circleIdx) => {
-  console.log('recreating protons');
   const { division, loop, id } = pattern;
 
   return createCircleProtons(patterns.length, division, circleIdx, loop, svg, keys, coloursArr, id);

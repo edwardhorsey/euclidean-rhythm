@@ -13,10 +13,8 @@ export const LandingPage = () => {
   const { startSeq, stopSeq, toggleMetronome } = sequencerContext;
   const { metronome, tempo } = sequencerContext.state;
   const [midiUrl, setMidiUrl] = useState('');
-  const testLambdaStyle = { marginLeft: '10px' };
 
   const createMidiFile = async () => {
-    setMidiUrl('');
     await getMidiFile(rhythmsContext.state)
       .then((data) => setMidiUrl(data.midiFile));
   };
@@ -35,19 +33,19 @@ export const LandingPage = () => {
         <button type="button" onClick={startSeq}>start</button>
         <button type="button" onClick={stopSeq}>stop</button>
       </div>
-      <div className={styles.downloadButton}>
-        <button type="button" style={testLambdaStyle} onClick={createMidiFile}>generate Midi File</button>
-        {midiUrl && (
-          <a href={midiUrl}>
-            <button type="button">Download</button>
-          </a>
-        )}
-      </div>
-      <div className={styles.metronomeButton}>
+      <div className={styles.seqButtonsRow}>
         <button type="button" onClick={toggleMetronome}>
           turn metronome
           {metronome ? ' OFF' : ' ON'}
         </button>
+        <div className={styles.downloadButton}>
+          <button type="button" onClick={createMidiFile}>generate Midi File</button>
+          {midiUrl && (
+            <a href={midiUrl}>
+              <button type="button">Download</button>
+            </a>
+          )}
+        </div>
       </div>
       <ProgramPatterns patterns={rhythmsContext.state} />
     </div>
