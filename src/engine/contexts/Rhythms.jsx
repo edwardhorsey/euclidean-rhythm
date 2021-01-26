@@ -14,8 +14,6 @@ export const Rhythms = ({ children }) => {
     E: [...Array(32)].map(() => createRef()),
   });
   const [rhythmIds] = useState(['A', 'B', 'C', 'D', 'E']);
-  console.log(state);
-  console.log(refs);
 
   const provideRhythmId = () => {
     if (state.length === 0) return rhythmIds[0];
@@ -28,7 +26,7 @@ export const Rhythms = ({ children }) => {
     if (state.length > 4) return;
     const division = Math.round(Math.random() * 31) + 2;
     const onset = Math.round(Math.random() * division) + 1;
-    const randomFreq = Math.round(Math.random() * pentatonicC.length - 1);
+    const randomFreq = Math.round(Math.random() * (pentatonicC.length - 1));
     const id = provideRhythmId();
 
     const rhythms = [
@@ -72,17 +70,10 @@ export const Rhythms = ({ children }) => {
     setState(rhythms);
   };
 
-  const clearLoop = (circleIdx) => {
+  const fillLoop = (circleIdx, on = true) => {
     const rhythms = [...state];
     const { length } = rhythms[circleIdx].loop;
-    rhythms[circleIdx].loop = [...Array(length)].map(() => 0);
-    setState(rhythms);
-  };
-
-  const fillLoop = (circleIdx) => {
-    const rhythms = [...state];
-    const { length } = rhythms[circleIdx].loop;
-    rhythms[circleIdx].loop = [...Array(length)].map(() => 1);
+    rhythms[circleIdx].loop = [...Array(length)].map(() => (on ? 1 : 0));
     setState(rhythms);
   };
 
@@ -112,7 +103,6 @@ export const Rhythms = ({ children }) => {
       updateDivision,
       updateOnset,
       updateFrequency,
-      clearLoop,
       fillLoop,
       muteRhythm,
       updateLoop,

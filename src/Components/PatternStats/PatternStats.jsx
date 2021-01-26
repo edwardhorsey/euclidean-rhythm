@@ -13,7 +13,6 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
     updateDivision,
     updateFrequency,
     removeRhythm,
-    clearLoop,
     fillLoop,
     muteRhythm,
     updateOnset,
@@ -26,10 +25,10 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
           Rhythm
           {rhythm.id}
         </h3>
-        <button type="button" className={styles.clearButton} onClick={() => clearLoop(patternIdx)}>
+        <button type="button" className={styles.clearButton} onClick={() => fillLoop(patternIdx, false)}>
           clear
         </button>
-        <button type="button" className={styles.fillButton} onClick={() => fillLoop(patternIdx)}>
+        <button type="button" className={styles.fillButton} onClick={() => fillLoop(patternIdx, true)}>
           fill
         </button>
         <button type="button" className={styles.muteButton} onClick={() => muteRhythm(patternIdx)}>
@@ -48,7 +47,7 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
           <select
             name={patternIdx}
             defaultValue={findNoteName(rhythm)}
-            onChange={(e) => updateFrequency(Number(e.target.value), e.target.name)}
+            onChange={(e) => updateFrequency(e.target.value, e.target.name)}
           >
             {pentatonicC.map((note, idx) => (
               <option key={frequencyDropdownKey[patternIdx * 32 + idx]} id={idx}>
