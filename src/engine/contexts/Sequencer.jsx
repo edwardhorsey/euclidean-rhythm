@@ -52,8 +52,6 @@ export const Sequencer = ({ children }) => {
   const setTempo = (event) => setState({ ...state, tempo: event.target.value });
 
   useEffect(() => {
-    console.log(rhythmsRef.current, graphicsRef.current, sequencerRef.current);
-
     rhythmsRef.current = rhythmsContext.state;
     sequencerRef.current.metronome.on = state.metronome;
     sequencerRef.current.tempo = state.tempo;
@@ -63,16 +61,16 @@ export const Sequencer = ({ children }) => {
       resetGraphicsRef();
     }
 
-    if (rhythmsRef.current.length > sequencerRef.current.nextNoteTimes.length) {
-      sequencerRef.current.nextNoteTimes = rhythmsRef.current.map((rhythm, idx) => (
-        sequencerRef.current.nextNoteTimes[idx] ?? { id: rhythm.id, currentStep: 0 }
-      ));
-    }
+    if (rhythmsRef.current.length > sequencerRef.current.nextNoteTimes.length
+      || rhythmsRef.current.length > graphicsRef.current.length
+    ) {
+      rhythmsRef.current.forEach((rhythm, idx) => {
+        sequencerRef.current.nextNoteTimes[idx] = sequencerRef.current.nextNoteTimes[idx]
+          ?? { id: rhythm.id, currentStep: 0 };
 
-    if (rhythmsRef.current.length > graphicsRef.current.length) {
-      graphicsRef.current = rhythmsRef.current.map((rhythm, idx) => (
-        graphicsRef.current[idx] ?? { id: rhythm.id, queue: [], lastDrawn: 0 }
-      ));
+        graphicsRef.current[idx] = graphicsRef.current[idx]
+          ?? { id: rhythm.id, queue: [], lastDrawn: 0 };
+      });
     }
 
     if (rhythmsRef.current.length < sequencerRef.current.nextNoteTimes.length) {
@@ -86,8 +84,6 @@ export const Sequencer = ({ children }) => {
       graphicsRef.current = graphicsRef.current
         .filter((circle) => ids.includes(circle.id));
     }
-
-    console.log(rhythmsRef.current, graphicsRef.current, sequencerRef.current);
   });
 
   const generateNextNotes = () => {
