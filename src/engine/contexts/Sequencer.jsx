@@ -7,7 +7,6 @@ import React, {
 import { useWebAudio } from './WebAudio';
 import { playOscillator } from '../sounds/osc';
 import { useRhythms } from './Rhythms';
-import { colours } from '../graphics/colours';
 
 export const SequencerContext = React.createContext(null);
 
@@ -40,43 +39,39 @@ export const Sequencer = ({ children }) => {
     ));
   };
 
-  const resetGraphics = () => {
+  const resetGraphicsRef = () => {
     rhythmsRef.current.forEach((rhythm, idx) => {
-      rhythm.loop.forEach((step, stepNum) => {
-        rhythm.loopRefs[stepNum].current.style.stroke = colours[rhythm.id];
-
-        if (step) {
-          rhythm.loopRefs[stepNum].current.style.fill = colours[rhythm.id];
-        } else {
-          rhythm.loopRefs[stepNum].current.style.fill = '';
-        }
+      rhythm.loop.forEach((_, stepNum) => {
+        rhythm.loopRefs[stepNum].current.style = '';
       });
 
-      graphicsRef.current[idx] = { queue: [], lastDrawn: 0 };
+      graphicsRef.current[idx] = { id: rhythm.id, queue: [], lastDrawn: 0 };
     });
   };
 
   const setTempo = (event) => setState({ ...state, tempo: event.target.value });
 
   useEffect(() => {
+    console.log(rhythmsRef.current, graphicsRef.current, sequencerRef.current);
+
     rhythmsRef.current = rhythmsContext.state;
     sequencerRef.current.metronome.on = state.metronome;
     sequencerRef.current.tempo = state.tempo;
 
     if (sequencerRef.current.timerID === 'notplaying') {
       resetNextNoteTimes();
-      resetGraphics();
+      resetGraphicsRef();
     }
 
     if (rhythmsRef.current.length > sequencerRef.current.nextNoteTimes.length) {
-      sequencerRef.current.nextNoteTimes = rhythmsRef.current.map((_, idx) => (
-        sequencerRef.current.nextNoteTimes[idx] ?? { id: idx, currentStep: 0 }
+      sequencerRef.current.nextNoteTimes = rhythmsRef.current.map((rhythm, idx) => (
+        sequencerRef.current.nextNoteTimes[idx] ?? { id: rhythm.id, currentStep: 0 }
       ));
     }
 
     if (rhythmsRef.current.length > graphicsRef.current.length) {
-      graphicsRef.current = rhythmsRef.current.map((_, idx) => (
-        graphicsRef.current[idx] ?? { queue: [], lastDrawn: 0 }
+      graphicsRef.current = rhythmsRef.current.map((rhythm, idx) => (
+        graphicsRef.current[idx] ?? { id: rhythm.id, queue: [], lastDrawn: 0 }
       ));
     }
 
@@ -91,6 +86,8 @@ export const Sequencer = ({ children }) => {
       graphicsRef.current = graphicsRef.current
         .filter((circle) => ids.includes(circle.id));
     }
+
+    console.log(rhythmsRef.current, graphicsRef.current, sequencerRef.current);
   });
 
   const generateNextNotes = () => {
@@ -176,19 +173,6 @@ export const Sequencer = ({ children }) => {
             rhythm.loopRefs[thisNote].current.style.stroke = 'white';
           }
 
-          console.log('                                      $EGIN');
-          console.log('previous version index ', lastNote);
-          console.log('previous version fill', previousFill);
-          console.log('previous version fill', previousStroke);
-          console.log('previous version', rhythm.loopRefs[lastNote].current);
-
-          console.log('GAP');
-
-          console.log('this version index ', thisNote);
-          console.log('this version', rhythm.loopRefs[thisNote].current);
-
-          console.log('                bit');
-
           graphicsRef.current[idx].lastDrawn = thisNote;
         }
       }
@@ -237,7 +221,7 @@ export const Sequencer = ({ children }) => {
     sequencerRef.current.timerID = 'notplaying';
 
     resetNextNoteTimes();
-    resetGraphics();
+    resetGraphicsRef();
 
     sequencerRef.current.metronome = {
       current16th: 0,

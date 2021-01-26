@@ -6,7 +6,13 @@ export const RhythmsContext = React.createContext(null);
 
 export const Rhythms = ({ children }) => {
   const [state, setState] = useState([]);
-  const [refs] = useState([...Array(5)].map(() => ([...Array(32)].map(() => createRef()))));
+  const [refs] = useState({
+    A: [...Array(32)].map(() => createRef()),
+    B: [...Array(32)].map(() => createRef()),
+    C: [...Array(32)].map(() => createRef()),
+    D: [...Array(32)].map(() => createRef()),
+    E: [...Array(32)].map(() => createRef()),
+  });
   const [rhythmIds] = useState(['A', 'B', 'C', 'D', 'E']);
   console.log(state);
   console.log(refs);
@@ -20,22 +26,20 @@ export const Rhythms = ({ children }) => {
 
   const createRhythm = () => {
     if (state.length > 4) return;
-    const randomDivision = Math.round(Math.random() * 31) + 2;
-    const randomOnset = Math.round(Math.random() * randomDivision) + 1;
+    const division = Math.round(Math.random() * 31) + 2;
+    const onset = Math.round(Math.random() * division) + 1;
     const randomFreq = Math.round(Math.random() * pentatonicC.length - 1);
-    console.log(randomFreq);
-    console.log(pentatonicC.length);
-    console.log(pentatonicC[randomFreq]);
+    const id = provideRhythmId();
 
     const rhythms = [
       ...state,
       {
-        id: provideRhythmId(),
+        id,
         freq: pentatonicC[randomFreq].frequency,
-        loop: bresenhamEuclidean(randomOnset, randomDivision),
-        loopRefs: refs[state.length],
-        onset: randomOnset,
-        division: randomDivision,
+        loop: bresenhamEuclidean(onset, division),
+        loopRefs: refs[id],
+        onset,
+        division,
         mute: false,
       },
     ];
