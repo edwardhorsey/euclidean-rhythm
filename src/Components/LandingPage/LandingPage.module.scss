@@ -3,29 +3,6 @@
     flex-direction: column;
     justify-content: center;
 
-    .seqButtonsRow {
-        display: flex;
-        justify-content: center;
-
-        button {
-            width: fit-content;
-            height: fit-content;
-            padding: 5px;
-            min-width: 80px;
-        }
-
-        .downloadButton {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-end;
-
-        input {
-            padding: 5px;
-        }
-    }
-    }
-    
     .tempoButton {
         display: flex;
         flex-direction: row;
@@ -34,6 +11,44 @@
 
         p {
             margin-right: 10px;
+        }
+    }
+
+    .navButtons {
+        min-height: 140px;
+
+        .seqButtonsRow {
+            display: flex;
+            justify-content: center;
+
+            .downloadButton {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-end;
+
+                a {
+                    text-decoration: none;
+                    color: black;
+                    width: fit-content;
+                    height: fit-content;
+                    padding: 5px 8px;
+                    min-width: 85px;
+                    font-size: 14px;
+                    outline: none;
+                    text-transform: none;
+                    display: inline-block;
+                    text-align: center;
+                    background-color: rgb(239, 239, 239);
+                    box-sizing: border-box;
+                    border: 1px solid grey;
+                    cursor: pointer;
+                    
+                    &:hover {
+                        background-color: rgb(206, 206, 206);
+                    }
+                }
+            }
         }
     }
 }

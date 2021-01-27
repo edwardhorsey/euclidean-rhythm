@@ -6,23 +6,12 @@
   width: 100vw;
   height: 100vh;
 
-  h2 {
+  color: #fff;
+  background: #4b5158;
+
+  h1 {
     font-size: 40px;
     padding: 15px 0 10px;
   }
 
-  .darkModeButton {
-    margin: 0 auto;
-    padding: 5px;
-  }
-
-  &.light {
-    color: black;
-    background: none;
-  }
-
-  &.dark {
-    color: white;
-    background: rgb(75, 81, 88);
-  }
 }

@@ -14,9 +14,9 @@ export const Proton = ({
 }) => {
   const rhythmsContext = useRhythms();
   const { updateLoop } = rhythmsContext;
-
   const transform = `rotate(${deg}, ${width}, ${height})`;
   const ref = rhythmsContext.state[circleIdx].loopRefs[idx];
+
   return (
     <circle
       cx={width}

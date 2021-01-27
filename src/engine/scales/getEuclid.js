@@ -8,6 +8,7 @@ export const bresenhamEuclidean = (onsets, totalPulses) => {
     pattern.push(xVal === previous ? 0 : 1);
     previous = xVal;
   }
+
   return pattern;
 };
 

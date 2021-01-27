@@ -1,7 +1,7 @@
 export const colours = {
   A: '#3DA32E',
   B: '#7D73F0',
-  C: '#6DF05A',
+  C: '#da6058',
   D: '#F08543',
   E: '#A36036',
 };

@@ -8,18 +8,18 @@ import { SIDE, RADIUS, CIRCLE_GAP } from '../../engine/graphics/constants';
 const circleKeys = [...Array(5)].map(() => nanoid());
 const protonKeys = [...Array(160)].map(() => nanoid());
 
-const createCircles = (patterns, svg, keys, coloursArr) => {
+const createCircles = (rhythms, svg, keys, coloursArr) => {
   const {
     width, height, radiusBase, circleGap,
   } = svg;
 
-  return patterns.map((pattern, idx) => (
+  return rhythms.map((rhythm, idx) => (
     <circle
       key={keys[idx]}
       cx={width}
       cy={height}
-      r={radiusBase - (idx * circleGap[patterns.length - 1])}
-      stroke={coloursArr[pattern.id]}
+      r={radiusBase - (idx * circleGap[rhythms.length - 1])}
+      stroke={coloursArr[rhythm.id]}
       strokeWidth="1"
       fill="transparent"
     />
@@ -27,14 +27,14 @@ const createCircles = (patterns, svg, keys, coloursArr) => {
 };
 
 const createCircleProtons = (
-  numPatterns,
+  numRhythms,
   numProtons,
   circleIdx,
   loop,
   svg,
   keys,
   coloursArr,
-  patternId,
+  rhythmId,
 ) => {
   const {
     width, height, radiusBase, circleGap,
@@ -48,20 +48,20 @@ const createCircleProtons = (
       width={width}
       height={height}
       deg={(360 / numProtons) * idx}
-      cy={(height - radiusBase) + (circleIdx * circleGap[numPatterns - 1])}
-      stroke={coloursArr[patternId]}
+      cy={(height - radiusBase) + (circleIdx * circleGap[numRhythms - 1])}
+      stroke={coloursArr[rhythmId]}
       on={!!loop[idx]}
     />
   ));
 };
 
-const createAllProtons = (patterns, svg, keys, coloursArr) => patterns.map((pattern, circleIdx) => {
-  const { division, loop, id } = pattern;
+const createAllProtons = (rhythms, svg, keys, coloursArr) => rhythms.map((rhythm, circleIdx) => {
+  const { division, loop, id } = rhythm;
 
-  return createCircleProtons(patterns.length, division, circleIdx, loop, svg, keys, coloursArr, id);
+  return createCircleProtons(rhythms.length, division, circleIdx, loop, svg, keys, coloursArr, id);
 });
 
-export const PatternGraphic = ({ patterns }) => {
+export const patternGraphic = ({ rhythms }) => {
   const [state] = useState({
     viewbox: `0 0 ${2 * SIDE} ${2 * SIDE}`,
     svg: {
@@ -75,12 +75,12 @@ export const PatternGraphic = ({ patterns }) => {
   const { viewbox, svg } = state;
 
   const circles = useMemo(() => (
-    createCircles(patterns, svg, circleKeys, colours)
-  ), [patterns, svg, colours]);
+    createCircles(rhythms, svg, circleKeys, colours)
+  ), [rhythms, svg, colours]);
 
   const protons = useMemo(() => (
-    createAllProtons(patterns, svg, protonKeys, colours)
-  ), [patterns, svg, colours]);
+    createAllProtons(rhythms, svg, protonKeys, colours)
+  ), [rhythms, svg, colours]);
 
   return (
     <div className={styles.PatternGraphic}>
@@ -92,4 +92,4 @@ export const PatternGraphic = ({ patterns }) => {
   );
 };
 
-export default PatternGraphic;
+export default patternGraphic;

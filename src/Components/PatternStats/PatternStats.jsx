@@ -3,6 +3,8 @@ import { nanoid } from 'nanoid';
 import styles from './PatternStats.module.scss';
 import { useRhythms } from '../../engine/contexts/Rhythms';
 import { findNoteName, pentatonicC } from '../../engine/scales/getFrequency';
+import { colours } from '../../engine/graphics/colours';
+import ControlsButton from '../ControlsButton';
 
 const frequencyDropdownKey = [...Array(160)].map(() => nanoid());
 const beatUnitKeys = [...Array(160)].map(() => nanoid());
@@ -18,25 +20,20 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
     updateOnset,
   } = rhythmsContext;
 
+  const patternColour = {
+    backgroundColor: colours[rhythm.id],
+  };
+
   return (
     <article className={styles.PatternStats}>
       <div className={styles.name}>
-        <h3>
-          Rhythm
-          {rhythm.id}
-        </h3>
-        <button type="button" className={styles.clearButton} onClick={() => fillLoop(patternIdx, false)}>
-          clear
-        </button>
-        <button type="button" className={styles.fillButton} onClick={() => fillLoop(patternIdx, true)}>
-          fill
-        </button>
-        <button type="button" className={styles.muteButton} onClick={() => muteRhythm(patternIdx)}>
-          mute
-        </button>
-        <button type="button" className={styles.removeButton} onClick={() => removeRhythm(patternIdx)}>
-          X
-        </button>
+        <div className={styles.patternBadge} style={patternColour}>
+          <span>Rhythm</span>
+        </div>
+        <ControlsButton text="clear" logic={() => fillLoop(patternIdx, false)} type="fillClearButton" />
+        <ControlsButton text="fill" logic={() => fillLoop(patternIdx, true)} type="fillClearButton" />
+        <ControlsButton text="mute" logic={() => muteRhythm(patternIdx)} type="muteButton" />
+        <ControlsButton text="X" logic={() => removeRhythm(patternIdx)} type="removeButton" />
       </div>
 
       <div className={styles.dropdowns}>
