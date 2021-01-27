@@ -61,7 +61,8 @@ export const Sequencer = ({ children }) => {
       resetGraphicsRef();
     }
 
-    if (rhythmsRef.current.length > sequencerRef.current.nextNoteTimes.length
+    if (
+      rhythmsRef.current.length > sequencerRef.current.nextNoteTimes.length
       || rhythmsRef.current.length > graphicsRef.current.length
     ) {
       rhythmsRef.current.forEach((rhythm, idx) => {
@@ -89,9 +90,8 @@ export const Sequencer = ({ children }) => {
   });
 
   const generateNextNotes = () => {
-    const secondsPerBeat = 60.0 / sequencerRef.current.tempo;
-    const wholeBar = secondsPerBeat * 4;
-    const single16thNote = wholeBar / 16;
+    const secondsPerQuarterNote = 60.0 / sequencerRef.current.tempo;
+    const single16thNote = secondsPerQuarterNote / 4;
 
     sequencerRef.current.metronome.current16th += 1;
     sequencerRef.current.metronome.nextNoteTime += single16thNote;
@@ -112,6 +112,9 @@ export const Sequencer = ({ children }) => {
   };
 
   const scheduleNotes = () => {
+    /*
+      Play rhythmns
+    */
     rhythmsRef.current.forEach((rhythm, idx) => {
       /*
         Add scheduled note to graphics queue
@@ -126,7 +129,9 @@ export const Sequencer = ({ children }) => {
       /*
         Schedule note to Oscillator
       */
-      if (!rhythm.mute && rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep]
+      if (
+        !rhythm.mute
+        && rhythm.loop[sequencerRef.current.nextNoteTimes[idx].currentStep]
       ) {
         playOscillator(audioContext, 'sine', rhythm.freq, sequencerRef.current.metronome.nextNoteTime);
       }
@@ -156,7 +161,9 @@ export const Sequencer = ({ children }) => {
           thisNote = graphicsRef.current[idx].queue[0].step;
           graphicsRef.current[idx].queue.splice(0, 1);
         }
-        if (lastNote !== thisNote
+
+        if (
+          lastNote !== thisNote
           && rhythm.loopRefs[lastNote].current
           && rhythm.loopRefs[thisNote].current
         ) {
@@ -197,7 +204,10 @@ export const Sequencer = ({ children }) => {
   };
 
   const startSeq = () => {
-    if (!rhythmsRef.current.length || sequencerRef.current.timerID !== 'notplaying') {
+    if (
+      !rhythmsRef.current.length
+      || sequencerRef.current.timerID !== 'notplaying'
+    ) {
       return;
     }
 

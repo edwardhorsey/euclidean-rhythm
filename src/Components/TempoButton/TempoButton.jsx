@@ -6,6 +6,7 @@ export const TempoButton = () => {
   const sequencerContext = useSequencer();
   const { setTempo } = sequencerContext;
   const { tempo } = sequencerContext.state;
+
   return (
     <div className={styles.TempoButton}>
       <input

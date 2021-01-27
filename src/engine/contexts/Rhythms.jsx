@@ -33,11 +33,11 @@ export const Rhythms = ({ children }) => {
       ...state,
       {
         id,
+        onset,
+        division,
         freq: pentatonicC[randomFreq].frequency,
         loop: bresenhamEuclidean(onset, division),
         loopRefs: refs[id],
-        onset,
-        division,
         mute: false,
       },
     ];

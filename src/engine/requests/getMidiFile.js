@@ -6,7 +6,6 @@ const getMidiFile = async (rhythms) => {
     name: findNoteName(rhythm),
     loop: rhythm.loop,
   }));
-
   const requestMetadata = {
     method: 'POST',
     body: JSON.stringify(postBody),
