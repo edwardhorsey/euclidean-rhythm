@@ -1,6 +1,6 @@
 # Euclidean MIDI generator
 ## A sequencer for creating euclidean polyrhythms [WIP]
-![WIPImage](https://i.imgur.com/qRDU5EG.png)
+![WIPImage](https://imgur.com/XUgR22l)
 
 ### Todo
 - Sound of oscillators:
