@@ -7,35 +7,24 @@
     padding: 10px;
     margin: 5px 0;
     text-align: left;
-
+    
     select {
         width: 80px;
     }
+
+    .patternBadge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80px;
+        height: 30px;
+    }
+
 
     .name {
         display: flex;
         justify-content: space-between;
         width: 100%;
-
-        .clearButton {
-            background-color: rgb(89, 203, 238);
-            width: 35px;
-            height: 25px;
-        }
-
-        .fillButton {
-            background-color: rgb(89, 203, 238);
-            width: 35px;
-            height: 25px;
-        }
-
-        .removeButton {
-            color: white;
-            background-color: rgb(177, 0, 0);
-            width: 25px;
-            height: 25px;
-            margin: auto 0;
-        }
     }
 
     .dropdowns {

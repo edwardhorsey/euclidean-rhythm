@@ -6,7 +6,7 @@ import { Rhythms } from './engine/contexts/Rhythms';
 import styles from './App.module.scss';
 
 const App = () => (
-  <main className={styles.App}>
+  <div className={styles.App}>
     <WebAudio>
       <Rhythms>
         <Sequencer>
@@ -15,7 +15,7 @@ const App = () => (
         </Sequencer>
       </Rhythms>
     </WebAudio>
-  </main>
+  </div>
 );
 
 export default App;
