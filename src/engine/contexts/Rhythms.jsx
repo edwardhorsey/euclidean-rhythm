@@ -25,7 +25,7 @@ export const Rhythms = ({ children }) => {
   const createRhythm = () => {
     if (state.length > 4) return;
     const division = Math.round(Math.random() * 31) + 2;
-    const onset = Math.round(Math.random() * division - 1) + 1;
+    const onset = Math.floor(division / 2);
     const randomFreq = Math.round(Math.random() * (pentatonicC.length - 1));
     const id = provideRhythmId();
 
@@ -49,6 +49,11 @@ export const Rhythms = ({ children }) => {
     const rhythms = [...state];
     const newRhythm = rhythms[patternIdx];
     newRhythm.division = division;
+
+    if (newRhythm.onset >= division) {
+      newRhythm.onset = division - 1;
+    }
+
     newRhythm.loop = bresenhamEuclidean(newRhythm.onset, division);
     rhythms[patternIdx] = newRhythm;
     setState(rhythms);
