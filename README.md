@@ -1,6 +1,6 @@
 # Euclidean Rhythm generator
 ## A sequencer for creating euclidean polyrhythms [WIP]
-![WIPImage](https://i.imgur.com/qRDU5EG.png)
+![WIPImage](https://i.imgur.com/QS9Qohi.png)
 
 ### Todo
 - Sound of oscillators:
