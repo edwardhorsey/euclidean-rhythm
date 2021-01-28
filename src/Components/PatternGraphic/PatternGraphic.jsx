@@ -12,13 +12,14 @@ const createCircles = (rhythms, svg, keys, coloursArr) => {
   const {
     width, height, radiusBase, circleGap,
   } = svg;
+  const { length } = rhythms;
 
   return rhythms.map((rhythm, idx) => (
     <circle
       key={keys[idx]}
       cx={width}
       cy={height}
-      r={radiusBase - (idx * circleGap[rhythms.length - 1])}
+      r={radiusBase - (idx * circleGap[length - 1])}
       stroke={coloursArr[rhythm.id]}
       strokeWidth="1"
       fill="transparent"

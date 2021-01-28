@@ -43,6 +43,8 @@
                     box-sizing: border-box;
                     border: 1px solid grey;
                     cursor: pointer;
+                    user-select: none;
+                    -webkit-user-select: none;
                     
                     &:hover {
                         background-color: rgb(206, 206, 206);

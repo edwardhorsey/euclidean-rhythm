@@ -1,3 +1,8 @@
 .Dropdown {
-    border: 2px solid red;
+    user-select: none;
+    -webkit-user-select: none;
+
+    p, select {
+        padding: 2px 0;
+    }
 }

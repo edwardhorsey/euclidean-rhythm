@@ -27,36 +27,23 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
     backgroundColor: colours[rhythm.id],
   };
 
-  const getPitchOptions = (pentatonic) => {
-    console.log('running getPitchOptions');
-    return pentatonic.map((note, idx) => (
-      <option key={frequencyDropdownKey[patternIdx * 32 + idx]} id={idx}>
-        {note.name}
-      </option>
-    ));
-  };
+  const getPitchOptions = (pentatonic) => pentatonic.map((note, idx) => (
+    <option key={frequencyDropdownKey[patternIdx * 32 + idx]} id={idx}>
+      {note.name}
+    </option>
+  ));
 
-  const getOnsetOptions = (division) => {
-    console.log('running getOnsetOptions');
-    return [...Array(division - 1).keys()].map((_, idx) => (
-      <option key={onsetKeys[patternIdx * 32 + idx]}>
-        {idx + 1}
-      </option>
-    ));
-  };
+  const getOnsetOptions = (maxOnsets) => [...Array(maxOnsets - 1).keys()].map((_, idx) => (
+    <option key={onsetKeys[patternIdx * 32 + idx]}>
+      {idx + 1}
+    </option>
+  ));
 
-  const getLoopOptions = (loopLength) => {
-    console.log('running getLoopOptions');
-    return [...Array(loopLength - 2).keys()].map((_, idx) => (
-      <option key={loopLengthKeys[patternIdx * 32 + idx]}>
-        {idx + 3}
-      </option>
-    ));
-  };
-
-  const pitchOptions = getPitchOptions(pentatonicC);
-  const onsetOptions = getOnsetOptions(rhythm.division);
-  const loopOptions = getLoopOptions(maxLoopLength);
+  const getLoopOptions = (loopLength) => [...Array(loopLength - 2).keys()].map((_, idx) => (
+    <option key={loopLengthKeys[patternIdx * 32 + idx]}>
+      {idx + 3}
+    </option>
+  ));
 
   return (
     <article className={styles.PatternStats}>
@@ -72,25 +59,25 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
 
       <div className={styles.dropdowns}>
         <Dropdown
-          title="Pitch:"
+          title="Pitch"
           patternIdx={patternIdx}
           defaultValue={findNoteName(rhythm)}
           logic={(e) => updateFrequency(e.target.value, e.target.name)}
-          options={pitchOptions}
+          options={getPitchOptions(pentatonicC)}
         />
         <Dropdown
-          title="Onsets:"
+          title="Onsets"
           patternIdx={patternIdx}
           defaultValue={rhythm.onset}
           logic={(e) => updateOnset(Number(e.target.value), e.target.name)}
-          options={onsetOptions}
+          options={getOnsetOptions(rhythm.division)}
         />
         <Dropdown
-          title="Loop length:"
+          title="Loop length"
           patternIdx={patternIdx}
           defaultValue={rhythm.division}
           logic={(e) => updateDivision(Number(e.target.value), e.target.name)}
-          options={loopOptions}
+          options={getLoopOptions(maxLoopLength)}
         />
       </div>
     </article>
