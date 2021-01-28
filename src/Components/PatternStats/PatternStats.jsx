@@ -5,9 +5,12 @@ import { useRhythms } from '../../engine/contexts/Rhythms';
 import { findNoteName, pentatonicC } from '../../engine/scales/getFrequency';
 import { colours } from '../../engine/graphics/colours';
 import ControlsButton from '../ControlsButton';
+import Dropdown from '../Dropdown';
 
 const frequencyDropdownKey = [...Array(160)].map(() => nanoid());
-const beatUnitKeys = [...Array(160)].map(() => nanoid());
+const onsetKeys = [...Array(160)].map(() => nanoid());
+const loopLengthKeys = [...Array(160)].map(() => nanoid());
+const maxLoopLength = 32;
 
 export const PatternStats = ({ rhythm, patternIdx }) => {
   const rhythmsContext = useRhythms();
@@ -24,6 +27,24 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
     backgroundColor: colours[rhythm.id],
   };
 
+  const getPitchOptions = (pentatonic) => pentatonic.map((note, idx) => (
+    <option key={frequencyDropdownKey[patternIdx * 32 + idx]} id={idx}>
+      {note.name}
+    </option>
+  ));
+
+  const getOnsetOptions = (maxOnsets) => [...Array(maxOnsets - 1).keys()].map((_, idx) => (
+    <option key={onsetKeys[patternIdx * 32 + idx]}>
+      {idx + 1}
+    </option>
+  ));
+
+  const getLoopOptions = (loopLength) => [...Array(loopLength - 2).keys()].map((_, idx) => (
+    <option key={loopLengthKeys[patternIdx * 32 + idx]}>
+      {idx + 3}
+    </option>
+  ));
+
   return (
     <article className={styles.PatternStats}>
       <div className={styles.name}>
@@ -37,52 +58,27 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
       </div>
 
       <div className={styles.dropdowns}>
-        <div>
-          <p>
-            Note:
-          </p>
-          <select
-            name={patternIdx}
-            defaultValue={findNoteName(rhythm)}
-            onChange={(e) => updateFrequency(e.target.value, e.target.name)}
-          >
-            {pentatonicC.map((note, idx) => (
-              <option key={frequencyDropdownKey[patternIdx * 32 + idx]} id={idx}>
-                {note.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <p>Onsets:</p>
-          <select
-            name={patternIdx}
-            defaultValue={rhythm.onset}
-            onChange={(e) => updateOnset(Number(e.target.value), e.target.name)}
-          >
-            {[...Array(rhythm.division - 1).keys()].map((_, idx) => (
-              <option key={beatUnitKeys[patternIdx * 32 + idx]}>
-                {idx + 1}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <p>Loop length:</p>
-          <select
-            name={patternIdx}
-            defaultValue={rhythm.division}
-            onChange={(e) => updateDivision(Number(e.target.value), e.target.name)}
-          >
-            {[...Array(30).keys()].map((_, idx) => (
-              <option key={beatUnitKeys[patternIdx * 32 + idx]}>
-                {idx + 3}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Dropdown
+          title="Pitch"
+          patternIdx={patternIdx}
+          defaultValue={findNoteName(rhythm)}
+          logic={(e) => updateFrequency(e.target.value, e.target.name)}
+          options={getPitchOptions(pentatonicC)}
+        />
+        <Dropdown
+          title="Onsets"
+          patternIdx={patternIdx}
+          defaultValue={rhythm.onset}
+          logic={(e) => updateOnset(Number(e.target.value), e.target.name)}
+          options={getOnsetOptions(rhythm.division)}
+        />
+        <Dropdown
+          title="Loop length"
+          patternIdx={patternIdx}
+          defaultValue={rhythm.division}
+          logic={(e) => updateDivision(Number(e.target.value), e.target.name)}
+          options={getLoopOptions(maxLoopLength)}
+        />
       </div>
     </article>
   );

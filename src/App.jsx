@@ -10,7 +10,7 @@ const App = () => (
     <WebAudio>
       <Rhythms>
         <Sequencer>
-          <h1>Euclidean Midi Generator</h1>
+          <h1>Euclidean Rhythm Generator</h1>
           <LandingPage />
         </Sequencer>
       </Rhythms>

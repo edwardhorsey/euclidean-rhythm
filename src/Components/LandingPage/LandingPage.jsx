@@ -43,7 +43,7 @@ export const LandingPage = () => {
           </div>
         </div>
       </section>
-      <ProgramPatterns rhythms={rhythms} />
+      <ProgramPatterns rhythms={rhythms} aa={5} bb={10} />
     </main>
   );
 };
