@@ -23,6 +23,8 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
     updateOnset,
   } = rhythmsContext;
 
+  console.log(rhythm);
+
   const patternColour = {
     backgroundColor: colours[rhythm.id],
   };
@@ -39,9 +41,9 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
     </option>
   ));
 
-  const getLoopOptions = (loopLength) => [...Array(loopLength - 2).keys()].map((_, idx) => (
+  const getLoopOptions = (loopLength) => [...Array(loopLength - 1).keys()].map((_, idx) => (
     <option key={loopLengthKeys[patternIdx * 32 + idx]}>
-      {idx + 3}
+      {idx + 2}
     </option>
   ));
 
