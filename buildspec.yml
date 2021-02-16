@@ -6,7 +6,7 @@ phases:
       - cd app && npm install
   build:
     commands:
-      - cd app && npm run build
+      - npm run build
 
 artifacts:
   files:
