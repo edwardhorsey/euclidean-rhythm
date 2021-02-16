@@ -3,6 +3,8 @@
 ![WIPImage](https://i.imgur.com/QS9Qohi.png)
 _[A work in progress]_
 
+#### Midi generator code https://github.com/edwardhorsey/generate-midi
+
 ### Todo
 - Sound of oscillators:
   - Gain staging for high frequencies
