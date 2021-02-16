@@ -1,9 +1,7 @@
 # Euclidean Rhythm generator
 ## A sequencer for creating Euclidean rhythms
 ![WIPImage](https://i.imgur.com/QS9Qohi.png)
-_[A work in progress]_
-
-#### Midi generator code https://github.com/edwardhorsey/generate-midi
+_[v1]_
 
 ### Todo
 - Sound of oscillators:
