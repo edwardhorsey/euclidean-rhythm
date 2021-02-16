@@ -1,0 +1,34 @@
+service: gen-midi
+plugins:
+  - serverless-dotenv-plugin
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-1
+  profile: default
+
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+      - "s3:ListBucket"
+      - "s3:GetObject"
+      - "s3:PutObject"
+    Resource: "arn:aws:s3:::${env:S3_BUCKET}/*"
+
+functions:
+  returnMidiFile:
+    handler: handler.createMidiFile
+    events:
+      - http:
+          path: createMidiFile
+          method: post
+          cors: true
+
+resources:
+  Resources:
+    NewResource:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${env:S3_BUCKET}
