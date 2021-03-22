@@ -27,3 +27,5 @@ yarn-error.log*
 debug.log
 yarn.lock
 REFACTORING*
+app/node_modules
+app/build
