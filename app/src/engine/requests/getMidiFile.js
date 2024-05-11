@@ -1,7 +1,7 @@
 import { findNoteName } from '../scales/getFrequency';
 
 const getMidiFile = async (rhythms) => {
-  const url = process.env.REACT_APP_API_URL;
+  const url = 'https://zksgo0swz3.execute-api.eu-west-1.amazonaws.com/dev/createMidiFile';
   const postBody = rhythms.map((rhythm) => ({
     name: findNoteName(rhythm),
     loop: rhythm.loop,
