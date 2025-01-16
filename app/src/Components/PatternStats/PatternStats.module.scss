@@ -3,10 +3,13 @@
     flex-direction: column;
     width: 100%;
     height: fit-content;
-    border: 2px solid black;
-    padding: 10px;
-    margin: 5px 0;
+    border-bottom: 2px solid #6b6b6b;
+    padding: 15px 0;
     text-align: left;
+
+    &:last-child {
+        border-bottom: none;
+    }
     
     select {
         width: 80px;

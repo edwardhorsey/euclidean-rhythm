@@ -1,4 +1,4 @@
-import React from 'react';
+// @ts-nocheck
 import { WebAudio } from './engine/contexts/WebAudio';
 import LandingPage from './Components/LandingPage';
 import { Sequencer } from './engine/contexts/Sequencer';

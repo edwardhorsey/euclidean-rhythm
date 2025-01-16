@@ -15,10 +15,14 @@ export const LandingPage = () => {
   const { createRhythm } = rhythmsContext;
   const rhythms = rhythmsContext.state;
   const [midiUrl, setMidiUrl] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const createMidiFile = async () => {
-    await getMidiFile(rhythms)
-      .then((data) => setMidiUrl(data.midiFile));
+  const createMidiFile = () => {
+    setMidiUrl('');
+    setLoading(true);
+    getMidiFile(rhythms)
+      .then((data) => setMidiUrl(data.midiFile))
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -29,18 +33,28 @@ export const LandingPage = () => {
           <TempoButton />
         </div>
         <div className={styles.seqButtonsRow}>
-          <Button text="create rhythm" logic={createRhythm} />
-          <Button text="start" logic={startSeq} />
-          <Button text="stop" logic={stopSeq} />
+          <Button text="Create rhythm" logic={createRhythm} />
+          <Button text="Start" logic={startSeq} />
+          <Button text="Stop" logic={stopSeq} />
         </div>
         <div className={styles.seqButtonsRow}>
-          <Button text={`turn metronome ${metronome ? ' OFF' : ' ON'}`} logic={toggleMetronome} />
+          <Button text={`Turn metronome ${metronome ? ' OFF' : ' ON'}`} logic={toggleMetronome} />
           <div className={styles.downloadButton}>
-            <Button text="generate Midi File" logic={createMidiFile} />
-            {midiUrl && (
-              <a href={midiUrl} rel="noreferrer" target="_blank">Download</a>
-            )}
+            <Button text="Generate Midi File" logic={createMidiFile} />
           </div>
+        </div>
+        <div className={styles.seqButtonsRow}>
+          {loading && <p>Loading...</p>}
+          {!loading && midiUrl && (
+            <a
+              className={styles.downloadLink}
+              href={midiUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
+              Download
+            </a>
+          )}
         </div>
       </section>
       <ProgramPatterns rhythms={rhythms} aa={5} bb={10} />

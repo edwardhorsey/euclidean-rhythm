@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Euclidean Rhythm",
+  "name": "Euclidean Rhythm generator",
   "icons": [
     {
       "src": "favicon.ico",
