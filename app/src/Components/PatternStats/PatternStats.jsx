@@ -49,11 +49,11 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
     <article className={styles.PatternStats}>
       <div className={styles.name}>
         <div className={styles.patternBadge} style={patternColour}>
-          <span>Rhythm</span>
+          <span>Pattern</span>
         </div>
-        <ControlsButton text="clear" logic={() => fillLoop(patternIdx, false)} type="fillClearButton" />
-        <ControlsButton text="fill" logic={() => fillLoop(patternIdx, true)} type="fillClearButton" />
-        <ControlsButton text="mute" logic={() => muteRhythm(patternIdx)} type="muteButton" />
+        <ControlsButton text="Clear" logic={() => fillLoop(patternIdx, false)} type="fillClearButton" />
+        <ControlsButton text="Fill" logic={() => fillLoop(patternIdx, true)} type="fillClearButton" />
+        <ControlsButton text="Mute" logic={() => muteRhythm(patternIdx)} type="muteButton" />
         <ControlsButton text="X" logic={() => removeRhythm(patternIdx)} type="removeButton" />
       </div>
 
