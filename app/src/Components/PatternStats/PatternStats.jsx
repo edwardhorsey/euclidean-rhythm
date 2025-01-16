@@ -23,8 +23,6 @@ export const PatternStats = ({ rhythm, patternIdx }) => {
     updateOnset,
   } = rhythmsContext;
 
-  console.log(rhythm);
-
   const patternColour = {
     backgroundColor: colours[rhythm.id],
   };

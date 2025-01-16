@@ -15,10 +15,14 @@ export const LandingPage = () => {
   const { createRhythm } = rhythmsContext;
   const rhythms = rhythmsContext.state;
   const [midiUrl, setMidiUrl] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const createMidiFile = async () => {
-    await getMidiFile(rhythms)
-      .then((data) => setMidiUrl(data.midiFile));
+  const createMidiFile = () => {
+    setMidiUrl('');
+    setLoading(true);
+    getMidiFile(rhythms)
+      .then((data) => setMidiUrl(data.midiFile))
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -37,7 +41,8 @@ export const LandingPage = () => {
           <Button text={`turn metronome ${metronome ? ' OFF' : ' ON'}`} logic={toggleMetronome} />
           <div className={styles.downloadButton}>
             <Button text="generate Midi File" logic={createMidiFile} />
-            {midiUrl && (
+            {loading && <p>Loading...</p>}
+            {!loading && midiUrl && (
               <a href={midiUrl} rel="noreferrer" target="_blank">Download</a>
             )}
           </div>
