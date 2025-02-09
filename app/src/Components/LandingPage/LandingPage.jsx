@@ -26,39 +26,48 @@ export const LandingPage = () => {
   };
 
   return (
-    <main className={styles.LandingPage}>
-      <section className={styles.navButtons}>
-        <div className={styles.tempoButton}>
-          <p>{`Tempo: ${tempo}`}</p>
-          <TempoButton />
-        </div>
-        <div className={styles.seqButtonsRow}>
-          <Button text="Create rhythm" logic={createRhythm} />
-          <Button text="Start" logic={startSeq} />
-          <Button text="Stop" logic={stopSeq} />
-        </div>
-        <div className={styles.seqButtonsRow}>
-          <Button text={`Turn metronome ${metronome ? ' OFF' : ' ON'}`} logic={toggleMetronome} />
-          <div className={styles.downloadButton}>
-            <Button text="Generate Midi File" logic={createMidiFile} />
+    <>
+      <main className={styles.LandingPage}>
+        <section className={styles.navButtons}>
+          <div className={styles.tempoButton}>
+            <p>{`Tempo: ${tempo}`}</p>
+            <TempoButton />
           </div>
-        </div>
-        <div className={styles.seqButtonsRow}>
-          {loading && <p>Loading...</p>}
-          {!loading && midiUrl && (
-            <a
-              className={styles.downloadLink}
-              href={midiUrl}
-              rel="noreferrer"
-              target="_blank"
-            >
-              Download
-            </a>
-          )}
-        </div>
-      </section>
-      <ProgramPatterns rhythms={rhythms} aa={5} bb={10} />
-    </main>
+          <div className={styles.seqButtonsRow}>
+            <Button text="Create rhythm" logic={createRhythm} />
+            <Button text="Start" logic={startSeq} />
+            <Button text="Stop" logic={stopSeq} />
+          </div>
+          <div className={styles.seqButtonsRow}>
+            <Button text={`Turn metronome ${metronome ? ' OFF' : ' ON'}`} logic={toggleMetronome} />
+            <div className={styles.downloadButton}>
+              <Button text="Generate Midi File" logic={createMidiFile} />
+            </div>
+          </div>
+          <div className={styles.seqButtonsRow}>
+            {loading && <p>Loading...</p>}
+            {!loading && midiUrl && (
+              <a
+                className={styles.downloadLink}
+                href={midiUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
+                Download
+              </a>
+            )}
+          </div>
+        </section>
+        <ProgramPatterns rhythms={rhythms} aa={5} bb={10} />
+      </main>
+      <footer className={styles.Footer}>
+        Built by{' '}
+        <a href="https://github.com/edwardhorsey" rel="no-referrer" target="_blank">
+          Edward Horsey
+        </a>{' '}
+        © {new Date().getFullYear()}
+      </footer>
+    </>
   );
 };
 
