@@ -11,11 +11,12 @@ export const Proton = ({
   on,
   circleIdx,
   idx,
+  rhythmId,
 }) => {
   const rhythmsContext = useRhythms();
-  const { updateLoop } = rhythmsContext;
+  const { updateLoop, domRefs } = rhythmsContext;
   const transform = `rotate(${deg}, ${width}, ${height})`;
-  const ref = rhythmsContext.state[circleIdx].loopRefs[idx];
+  const ref = domRefs[rhythmId][idx];
 
   return (
     <circle

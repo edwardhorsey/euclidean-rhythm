@@ -1,19 +1,21 @@
 import React, { useState, useContext, createRef } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
 import { pentatonicC } from '../scales/getFrequency';
 import { bresenhamEuclidean } from '../scales/getEuclid';
+
+const rhythmIds = ['A', 'B', 'C', 'D', 'E'];
 
 export const RhythmsContext = React.createContext(null);
 
 export const Rhythms = ({ children }) => {
-  const [state, setState] = useState([]);
-  const [refs] = useState({
+  const [state, setState] = useLocalStorage('rhythms', []);
+  const [domRefs] = useState({
     A: [...Array(32)].map(() => createRef()),
     B: [...Array(32)].map(() => createRef()),
     C: [...Array(32)].map(() => createRef()),
     D: [...Array(32)].map(() => createRef()),
     E: [...Array(32)].map(() => createRef()),
   });
-  const [rhythmIds] = useState(['A', 'B', 'C', 'D', 'E']);
 
   const provideRhythmId = () => {
     if (state.length === 0) return rhythmIds[0];
@@ -37,7 +39,6 @@ export const Rhythms = ({ children }) => {
         division,
         freq: pentatonicC[randomFreq].frequency,
         loop: bresenhamEuclidean(onset, division),
-        loopRefs: refs[id],
         mute: false,
       },
     ];
@@ -100,10 +101,15 @@ export const Rhythms = ({ children }) => {
     setState(rhythms);
   };
 
+  const resetRhythms = () => {
+    setState([]);
+  };
+
   return (
     <RhythmsContext.Provider value={{
       state,
       setState,
+      domRefs,
       createRhythm,
       updateDivision,
       updateOnset,
@@ -112,6 +118,7 @@ export const Rhythms = ({ children }) => {
       muteRhythm,
       updateLoop,
       removeRhythm,
+      resetRhythms,
     }}
     >
       {children}

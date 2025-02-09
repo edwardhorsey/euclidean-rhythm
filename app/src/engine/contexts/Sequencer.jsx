@@ -42,7 +42,7 @@ export const Sequencer = ({ children }) => {
   const resetGraphicsRef = () => {
     rhythmsRef.current.forEach((rhythm, idx) => {
       rhythm.loop.forEach((_, stepNum) => {
-        rhythm.loopRefs[stepNum].current.style = '';
+        rhythmsContext.domRefs[rhythm.id][stepNum].current.style = '';
       });
 
       graphicsRef.current[idx] = { id: rhythm.id, queue: [], lastDrawn: 0 };
@@ -164,18 +164,18 @@ export const Sequencer = ({ children }) => {
 
         if (
           lastNote !== thisNote
-          && rhythm.loopRefs[lastNote].current
-          && rhythm.loopRefs[thisNote].current
+          && rhythmsContext.domRefs[rhythm.id][lastNote].current
+          && rhythmsContext.domRefs[rhythm.id][thisNote].current
         ) {
-          const previousFill = rhythm.loopRefs[thisNote].current.style.fill;
-          const previousStroke = rhythm.loopRefs[thisNote].current.style.stroke;
-          rhythm.loopRefs[lastNote].current.style.fill = previousFill;
-          rhythm.loopRefs[lastNote].current.style.stroke = previousStroke;
+          const previousFill = rhythmsContext.domRefs[rhythm.id][thisNote].current.style.fill;
+          const previousStroke = rhythmsContext.domRefs[rhythm.id][thisNote].current.style.stroke;
+          rhythmsContext.domRefs[rhythm.id][lastNote].current.style.fill = previousFill;
+          rhythmsContext.domRefs[rhythm.id][lastNote].current.style.stroke = previousStroke;
 
           if (rhythm.loop[thisNote] === 1) {
-            rhythm.loopRefs[thisNote].current.style.fill = 'white';
+            rhythmsContext.domRefs[rhythm.id][thisNote].current.style.fill = 'white';
           } else {
-            rhythm.loopRefs[thisNote].current.style.stroke = 'white';
+            rhythmsContext.domRefs[rhythm.id][thisNote].current.style.stroke = 'white';
           }
 
           graphicsRef.current[idx].lastDrawn = thisNote;

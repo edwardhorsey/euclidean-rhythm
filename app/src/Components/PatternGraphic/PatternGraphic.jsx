@@ -52,6 +52,7 @@ const createCircleProtons = (
       cy={(height - radiusBase) + (circleIdx * circleGap[numRhythms - 1])}
       stroke={coloursArr[rhythmId]}
       on={!!loop[idx]}
+      rhythmId={rhythmId}
     />
   ));
 };

@@ -12,7 +12,7 @@ export const LandingPage = () => {
   const rhythmsContext = useRhythms();
   const { startSeq, stopSeq, toggleMetronome } = sequencerContext;
   const { metronome, tempo } = sequencerContext.state;
-  const { createRhythm } = rhythmsContext;
+  const { createRhythm, resetRhythms } = rhythmsContext;
   const rhythms = rhythmsContext.state;
   const [midiUrl, setMidiUrl] = useState('');
   const [loading, setLoading] = useState(false);
@@ -37,6 +37,7 @@ export const LandingPage = () => {
             <Button text="Create rhythm" logic={createRhythm} />
             <Button text="Start" logic={startSeq} />
             <Button text="Stop" logic={stopSeq} />
+            <Button text="Clear" logic={resetRhythms} />
           </div>
           <div className={styles.seqButtonsRow}>
             <Button text={metronome ? 'Metronome ON' : 'Metronome OFF'} logic={toggleMetronome} />
