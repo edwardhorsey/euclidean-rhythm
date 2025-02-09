@@ -39,9 +39,9 @@ export const LandingPage = () => {
             <Button text="Stop" logic={stopSeq} />
           </div>
           <div className={styles.seqButtonsRow}>
-            <Button text={`Turn metronome ${metronome ? ' OFF' : ' ON'}`} logic={toggleMetronome} />
+            <Button text={metronome ? 'Metronome ON' : 'Metronome OFF'} logic={toggleMetronome} />
             <div className={styles.downloadButton}>
-              <Button text="Generate Midi File" logic={createMidiFile} />
+              <Button text="Generate MIDI file" logic={createMidiFile} />
             </div>
           </div>
           <div className={styles.seqButtonsRow}>
